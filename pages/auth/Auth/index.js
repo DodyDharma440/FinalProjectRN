@@ -8,22 +8,25 @@ import {
   ScrollView,
   Dimensions,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
+import * as firebase from "firebase";
 import { useTheme } from "@react-navigation/native";
 import FeatherIcon from "react-native-vector-icons/Feather";
 import {
-  Container,
   TextBold,
   TextMedium,
   InputField,
   Button,
+  Alert,
 } from "components/common";
+import { Container } from "components/layout";
 import { logoWithBg } from "assets/images";
 
 const Auth = ({ route, navigation }) => {
   const { mode } = route.params;
   const { colors } = useTheme();
-  const [currentMode, setCurrentMode] = useState(mode);
+  const [currentMode, setCurrentMode] = useState(mode ? mode : "login");
   const [inputValue, setInputValue] = useState({
     name: "",
     email: "",
@@ -32,6 +35,71 @@ const Auth = ({ route, navigation }) => {
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
+
+  const handleSignUp = async () => {
+    setLoading(true);
+    if (inputValue.password === inputValue.confirmPassword) {
+      try {
+        setErrorMessage(null);
+        const response = await firebase
+          .auth()
+          .createUserWithEmailAndPassword(
+            inputValue.email,
+            inputValue.password
+          );
+        setInputValue({
+          name: "",
+          email: "",
+          password: "",
+          confirmPassword: "",
+        });
+        navigation.replace("MainApp");
+        return response.user.updateProfile({
+          displayName: inputValue.name,
+        });
+      } catch (error) {
+        setErrorMessage(error.message);
+        setLoading(false);
+      }
+    } else {
+      setErrorMessage("Password and confirm password is not match");
+    }
+  };
+
+  const handleLogin = async () => {
+    setLoading(true);
+
+    try {
+      setErrorMessage(null);
+      await firebase
+        .auth()
+        .signInWithEmailAndPassword(inputValue.email, inputValue.password);
+      setInputValue({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+      });
+      setLoading(false);
+      navigation.replace("MainApp");
+    } catch (error) {
+      setErrorMessage(error.message);
+      setLoading(false);
+    }
+  };
+
+  const handleSwitchMode = () => {
+    setErrorMessage(null);
+    setInputValue({
+      name: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    });
+    setCurrentMode((prev) => (prev === "login" ? "signup" : "login"));
+  };
 
   const SuggestionText = () => {
     return (
@@ -39,7 +107,7 @@ const Auth = ({ route, navigation }) => {
         {currentMode === "login" && (
           <>
             <TextMedium>Don't have an account? </TextMedium>
-            <TouchableOpacity onPress={() => setCurrentMode("signup")}>
+            <TouchableOpacity onPress={handleSwitchMode}>
               <TextMedium style={styles.linkText(colors)}>Sign Up</TextMedium>
             </TouchableOpacity>
           </>
@@ -47,7 +115,7 @@ const Auth = ({ route, navigation }) => {
         {currentMode === "signup" && (
           <>
             <TextMedium>Already have an account? </TextMedium>
-            <TouchableOpacity onPress={() => setCurrentMode("login")}>
+            <TouchableOpacity onPress={handleSwitchMode}>
               <TextMedium style={styles.linkText(colors)}>Sign In</TextMedium>
             </TouchableOpacity>
           </>
@@ -72,6 +140,11 @@ const Auth = ({ route, navigation }) => {
               : "Sign up your account to use this app."}
           </TextMedium>
         </View>
+        {errorMessage && (
+          <Alert style={{ marginBottom: 8 }} variant="warning">
+            {errorMessage}
+          </Alert>
+        )}
         <View style={styles.form}>
           {currentMode === "signup" && (
             <InputField
@@ -150,11 +223,16 @@ const Auth = ({ route, navigation }) => {
             />
           )}
           <Button
+            onPress={currentMode === "signup" ? handleSignUp : handleLogin}
             variant="filled"
             color="primary"
             colorScheme="dark"
+            withSpacer
             title={currentMode === "login" ? "Login" : "Sign Up"}
           />
+          {loading && (
+            <ActivityIndicator size="small" color={colors.textSecondary} />
+          )}
         </View>
         <SuggestionText />
       </ScrollView>

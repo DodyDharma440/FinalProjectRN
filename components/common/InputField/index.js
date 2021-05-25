@@ -49,5 +49,7 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
+    fontFamily: "DMSans_500Medium",
+    fontSize: 16,
   },
 });
