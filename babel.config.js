@@ -12,6 +12,8 @@ module.exports = function (api) {
             components: "./components",
             pages: "./pages",
             router: "./router",
+            hooks: "./hooks",
+            utils: "./utils",
           },
         },
       ],

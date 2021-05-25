@@ -2,6 +2,8 @@ import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { TextRegular } from "components/common";
 import { useTheme } from "@react-navigation/native";
+import { useMergeStyle } from "hooks";
+import { generateColor } from "utils";
 import PropTypes from "prop-types";
 
 const Button = ({
@@ -10,32 +12,18 @@ const Button = ({
   title,
   withSpacer,
   colorScheme,
+  style,
   ...props
 }) => {
   const { colors } = useTheme();
-
-  const generateColor = () => {
-    switch (color) {
-      case "primary":
-        return colors.primary;
-
-      case "secondary":
-        return colors.secondary;
-
-      default:
-        return "#fff";
-    }
-  };
+  const mergedStyle = useMergeStyle(style, {
+    ...styles.container,
+    ...styles.variant(color, colors, variant),
+    ...styles.spacer(withSpacer),
+  });
 
   return (
-    <TouchableOpacity
-      style={[
-        styles.container,
-        styles.variant(generateColor, variant),
-        styles.spacer(withSpacer),
-      ]}
-      {...props}
-    >
+    <TouchableOpacity style={mergedStyle} {...props}>
       <TextRegular style={[styles.title, styles.colorScheme(colorScheme)]}>
         {title}
       </TextRegular>
@@ -75,16 +63,16 @@ const styles = StyleSheet.create({
   colorScheme: (theme) => ({
     color: theme === "dark" ? "#fff" : theme === "light" ? "#222" : "#000",
   }),
-  variant: (color, variant) => {
+  variant: (colorType, themeColor, variant) => {
     switch (variant) {
       case "filled":
         return {
-          backgroundColor: color(),
+          backgroundColor: generateColor(colorType, themeColor),
         };
       case "outlined":
         return {
           borderWidth: 1,
-          borderColor: color(),
+          borderColor: generateColor(colorType, themeColor),
         };
 
       default:
