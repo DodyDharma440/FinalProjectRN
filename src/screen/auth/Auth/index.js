@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import {
   StyleSheet,
-  Text,
   View,
   Image,
   ScrollView,
@@ -10,9 +9,10 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import * as firebase from "firebase";
 import { useTheme } from "@react-navigation/native";
 import FeatherIcon from "react-native-vector-icons/Feather";
+import { useDispatch } from "react-redux";
+import { signIn, signUp } from "my-redux/actions/auth";
 import {
   TextBold,
   TextMedium,
@@ -26,6 +26,7 @@ import { logoWithBg } from "assets/images";
 const Auth = ({ route, navigation }) => {
   const { mode } = route.params;
   const { colors } = useTheme();
+  const dispatch = useDispatch();
   const [currentMode, setCurrentMode] = useState(mode ? mode : "login");
   const [inputValue, setInputValue] = useState({
     name: "",
@@ -38,56 +39,47 @@ const Auth = ({ route, navigation }) => {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
 
-  const handleSignUp = async () => {
+  const handleSignUp = () => {
     setLoading(true);
     if (inputValue.password === inputValue.confirmPassword) {
-      try {
-        setErrorMessage(null);
-        const response = await firebase
-          .auth()
-          .createUserWithEmailAndPassword(
-            inputValue.email,
-            inputValue.password
-          );
-        setInputValue({
-          name: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
-        });
-        navigation.replace("MainApp");
-        return response.user.updateProfile({
-          displayName: inputValue.name,
-        });
-      } catch (error) {
-        setErrorMessage(error.message);
-        setLoading(false);
-      }
+      dispatch(
+        signUp(inputValue, (success, err) => {
+          if (success) {
+            setInputValue({
+              name: "",
+              email: "",
+              password: "",
+              confirmPassword: "",
+            });
+            navigation.replace("MainApp");
+          }
+
+          if (err) {
+            setErrorMessage(err.message);
+            setLoading(false);
+          }
+        })
+      );
     } else {
       setErrorMessage("Password and confirm password is not match");
+      setLoading(false);
     }
   };
 
-  const handleLogin = async () => {
+  const handleLogin = () => {
     setLoading(true);
+    dispatch(
+      signIn(inputValue, (success, err) => {
+        if (success) {
+          navigation.replace("MainApp");
+        }
 
-    try {
-      setErrorMessage(null);
-      await firebase
-        .auth()
-        .signInWithEmailAndPassword(inputValue.email, inputValue.password);
-      setInputValue({
-        name: "",
-        email: "",
-        password: "",
-        confirmPassword: "",
-      });
-      setLoading(false);
-      navigation.replace("MainApp");
-    } catch (error) {
-      setErrorMessage(error.message);
-      setLoading(false);
-    }
+        if (err) {
+          setErrorMessage(err.message);
+          setLoading(false);
+        }
+      })
+    );
   };
 
   const handleSwitchMode = () => {

@@ -18,7 +18,7 @@ const Button = ({
   const { colors } = useTheme();
   const mergedStyle = useMergeStyle(style, {
     ...styles.container,
-    ...styles.variant(color, colors, variant),
+    ...styles.variant(color, variant),
     ...styles.spacer(withSpacer),
   });
 
@@ -63,16 +63,16 @@ const styles = StyleSheet.create({
   colorScheme: (theme) => ({
     color: theme === "dark" ? "#fff" : theme === "light" ? "#222" : "#000",
   }),
-  variant: (colorType, themeColor, variant) => {
+  variant: (colorType, variant) => {
     switch (variant) {
       case "filled":
         return {
-          backgroundColor: generateColor(colorType, themeColor),
+          backgroundColor: generateColor(colorType),
         };
       case "outlined":
         return {
           borderWidth: 1,
-          borderColor: generateColor(colorType, themeColor),
+          borderColor: generateColor(colorType),
         };
 
       default:

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { createStackNavigator } from "@react-navigation/stack";
-import { WellcomeScreen, AuthScreen } from "pages/auth";
+import { WellcomeScreen, AuthScreen } from "screen/auth";
 
 const Stack = createStackNavigator();
 

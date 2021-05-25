@@ -1,18 +1,28 @@
 import React from "react";
 import { StyleSheet, Text, View, Button } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
 import { createStackNavigator } from "@react-navigation/stack";
-import * as firebase from "firebase";
+import { logout } from "my-redux/actions/auth";
 
 const Stack = createStackNavigator();
 
 const Main = ({ navigation }) => {
+  const dispatch = useDispatch();
+  const userData = useSelector((state) => state.auth.userData);
+  console.log("u => ", userData);
+
   const handleLogout = async () => {
-    try {
-      await firebase.auth().signOut();
-      navigation.replace("Loading");
-    } catch (error) {
-      console.log(error);
-    }
+    dispatch(
+      logout((success, err) => {
+        if (success) {
+          navigation.replace("Auth");
+        }
+
+        if (err) {
+          console.log(err);
+        }
+      })
+    );
   };
 
   return (
