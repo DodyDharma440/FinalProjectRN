@@ -16,7 +16,7 @@ const CardImage = ({ iconButton, buttonAction, onPress, image, label }) => {
             onPress={buttonAction}
             style={styles.button}
             size="sm"
-            color="white"
+            color="default"
             variant="filled"
             icon={iconButton}
           />

@@ -2,6 +2,7 @@ import {
   FETCHING_MEALS,
   FETCH_MEALS_ERROR,
   GET_MEALS,
+  GET_MEALS_BY_CATEGORY,
   SEARCH_MEALS,
 } from "my-redux/types";
 
@@ -10,6 +11,7 @@ const meals = {
   errorMessage: null,
   data: [],
   searchResults: [],
+  switchedMeals: [],
 };
 
 const reducer = (state = meals, action) => {
@@ -32,6 +34,13 @@ const reducer = (state = meals, action) => {
         ...state,
         loading: false,
         data: action.payload,
+      };
+
+    case GET_MEALS_BY_CATEGORY:
+      return {
+        ...state,
+        loading: false,
+        switchedMeals: action.payload,
       };
 
     case SEARCH_MEALS:

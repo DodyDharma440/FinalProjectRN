@@ -9,8 +9,7 @@ import {
   FlatList,
   SafeAreaView,
 } from "react-native";
-import { getMealsByCategory, getIngredientList } from "my-redux/actions/recipe";
-import { FETCHING_MEALS, FETCHING_INGREDIENTS } from "my-redux/types";
+import { getRandomMeals, getIngredientList } from "my-redux/actions/recipe";
 import { Alert } from "components/common";
 import { Container, MainHeader, ListHeader } from "components/layout";
 import {
@@ -19,6 +18,7 @@ import {
   MealCardMedium,
   IngredientCard,
 } from "components/products";
+import { getFirstChild, getLastChild } from "utils/getComponentChild";
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -26,14 +26,7 @@ const Home = ({ navigation }) => {
   const ingredientsState = useSelector((state) => state.ingredients);
 
   useEffect(() => {
-    dispatch({
-      type: FETCHING_MEALS,
-    });
-    dispatch({
-      type: FETCHING_INGREDIENTS,
-    });
-
-    dispatch(getMealsByCategory("Beef"));
+    dispatch(getRandomMeals("Beef"));
     dispatch(getIngredientList());
   }, []);
 
@@ -45,12 +38,22 @@ const Home = ({ navigation }) => {
         </View>
         <View style={[styles.horizontalSpacer, styles.searchWrapper]}>
           <Search
-            onPress={() => navigation.navigate("Explore")}
+            onPress={() =>
+              navigation.navigate("Explore", {
+                screen: "Search",
+              })
+            }
             editable={false}
           />
         </View>
         <View style={[styles.horizontalSpacer, styles.listTitleWrapper]}>
-          <ListHeader moreNav={() => navigation.navigate("Explore")}>
+          <ListHeader
+            moreNav={() =>
+              navigation.navigate("ExploreTab", {
+                screen: "Meals",
+              })
+            }
+          >
             Recommendation Recipes
           </ListHeader>
         </View>
@@ -67,7 +70,13 @@ const Home = ({ navigation }) => {
                 data={mealsState.data.slice(0, 5)}
                 keyExtractor={(item) => item.idMeal}
                 horizontal
-                renderItem={({ item }) => <MealCardLarge item={item} />}
+                renderItem={({ item, index }) => (
+                  <MealCardLarge
+                    item={item}
+                    isFirstChild={getFirstChild(index, 5)}
+                    isLastChild={getLastChild(index, 5)}
+                  />
+                )}
                 showsHorizontalScrollIndicator={false}
               />
               <View style={[styles.tileListWrapper]}>
@@ -85,7 +94,13 @@ const Home = ({ navigation }) => {
         </View>
 
         <View style={styles.horizontalSpacer}>
-          <ListHeader moreNav={() => navigation.navigate("Explore")}>
+          <ListHeader
+            moreNav={() =>
+              navigation.navigate("ExploreTab", {
+                screen: "Ingredients",
+              })
+            }
+          >
             Popular Ingredients
           </ListHeader>
         </View>

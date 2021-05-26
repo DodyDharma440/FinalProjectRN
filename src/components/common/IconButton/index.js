@@ -36,7 +36,7 @@ IconButton.defaultProps = {
 
 IconButton.propTypes = {
   variant: PropTypes.oneOf(["filled", "outlined"]),
-  color: PropTypes.oneOf(["primary", "secondary", "white"]),
+  color: PropTypes.oneOf(["primary", "secondary", "default"]),
   title: PropTypes.string,
   size: PropTypes.string.isRequired,
 };

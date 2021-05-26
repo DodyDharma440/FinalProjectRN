@@ -13,7 +13,7 @@ import { TextBold, TextMedium, IconButton } from "components/common";
 import * as api from "api";
 import FaIcon from "react-native-vector-icons/FontAwesome";
 
-const MealCardLarge = ({ item }) => {
+const MealCardLarge = ({ item, isFirstChild, isLastChild }) => {
   const { strMeal, strMealThumb, idMeal } = item;
   const { colors } = useTheme();
   const navigation = useNavigation();
@@ -37,7 +37,7 @@ const MealCardLarge = ({ item }) => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container(isFirstChild, isLastChild)}>
       <ImageBackground
         style={styles.image}
         source={{ uri: strMealThumb }}
@@ -50,7 +50,7 @@ const MealCardLarge = ({ item }) => {
           <IconButton
             style={styles.button}
             size="sm"
-            color="white"
+            color="default"
             variant="filled"
             icon={<FaIcon name="bookmark-o" size={20} color="#000" />}
           />
@@ -72,14 +72,17 @@ const MealCardLarge = ({ item }) => {
 
 MealCardLarge.propTypes = {
   item: PropTypes.object.isRequired,
+  isFirstChild: PropTypes.bool,
+  isLastChild: PropTypes.bool,
 };
 
 export default MealCardLarge;
 
 const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: 16,
-  },
+  container: (first, last) => ({
+    marginLeft: first ? 16 : 4,
+    marginRight: last ? 16 : 4,
+  }),
   image: {
     resizeMode: "cover",
     width: 225,

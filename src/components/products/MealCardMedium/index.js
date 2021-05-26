@@ -32,6 +32,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginHorizontal: 6,
-    marginBottom: 8,
+    marginBottom: 16,
   },
 });
