@@ -1,29 +1,17 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { Search } from "components/products";
-import { MealsExploreScreen, IngredientsExploreScreen } from "screen/explore";
+import {
+  MealsExploreScreen,
+  IngredientsExploreScreen,
+  MealsSearchScreen,
+  IngredientsSearchScreen,
+} from "screen/explore";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
-
-const Contoh1 = () => {
-  return (
-    <View>
-      <Text>Contoh1</Text>
-    </View>
-  );
-};
-
-const Contoh2 = () => {
-  return (
-    <View>
-      <Text>Contoh2</Text>
-    </View>
-  );
-};
 
 const ExploreTab = () => {
   return (
@@ -50,8 +38,8 @@ const SearchTab = () => {
         },
       }}
     >
-      <Tab.Screen component={Contoh1} name="Meals" />
-      <Tab.Screen component={Contoh2} name="Ingredients" />
+      <Tab.Screen component={MealsSearchScreen} name="Meals" />
+      <Tab.Screen component={IngredientsSearchScreen} name="Ingredients" />
     </Tab.Navigator>
   );
 };

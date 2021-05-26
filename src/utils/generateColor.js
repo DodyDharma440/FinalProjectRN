@@ -17,7 +17,7 @@ const generateColor = (colorType) => {
       return colors.bgWarning;
 
     case "bg-danger":
-      return colors.bgSuccess;
+      return colors.bgDanger;
 
     case "text-success":
       return colors.textSuccess;

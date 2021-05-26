@@ -1,18 +1,43 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import { Pressable } from "react-native";
+import { useDispatch, useSelector } from "react-redux";
 import { InputField } from "components/common";
 import FeatherIcon from "react-native-vector-icons/Feather";
 import { useTheme } from "@react-navigation/native";
+import {
+  searchMeals,
+  resetSearchMeals,
+  searchIngredients,
+  resetSearchIngredients,
+} from "my-redux/actions/recipe";
 
 const Search = ({ editable, ...props }) => {
   const { colors } = useTheme();
+  const [inputValue, setInputValue] = useState("");
+  const dispatch = useDispatch();
+
+  const handleSubmit = () => {
+    if (inputValue !== "") {
+      dispatch(searchMeals(inputValue));
+      dispatch(searchIngredients(inputValue));
+    }
+  };
+
+  useEffect(() => {
+    dispatch(resetSearchMeals());
+    dispatch(resetSearchIngredients());
+  }, [dispatch]);
 
   return (
     <Pressable {...props}>
       <InputField
-        placeholder="Search"
+        placeholder="Search by name"
         editable={editable}
+        autoFocus
+        value={inputValue}
+        onSubmitEditing={handleSubmit}
+        onChangeText={(val) => setInputValue(val)}
         leftIcon={
           <FeatherIcon name="search" size={20} color={colors.textSecondary} />
         }
@@ -30,5 +55,3 @@ Search.propTypes = {
 };
 
 export default Search;
-
-const styles = StyleSheet.create({});

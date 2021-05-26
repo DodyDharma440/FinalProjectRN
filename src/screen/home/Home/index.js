@@ -26,7 +26,7 @@ const Home = ({ navigation }) => {
   const ingredientsState = useSelector((state) => state.ingredients);
 
   useEffect(() => {
-    dispatch(getRandomMeals("Beef"));
+    dispatch(getRandomMeals());
     dispatch(getIngredientList());
   }, []);
 
@@ -41,6 +41,7 @@ const Home = ({ navigation }) => {
             onPress={() =>
               navigation.navigate("Explore", {
                 screen: "Search",
+                initial: false,
               })
             }
             editable={false}
