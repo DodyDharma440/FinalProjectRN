@@ -1,6 +1,6 @@
 import "react-native-gesture-handler";
-import React from "react";
-import { StatusBar } from "react-native";
+import React, { useEffect } from "react";
+import { StatusBar, LogBox } from "react-native";
 import {
   useFonts,
   DMSans_400Regular,
@@ -21,6 +21,10 @@ const App = () => {
     DMSans_500Medium,
     DMSans_700Bold,
   });
+
+  useEffect(() => {
+    LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
+  }, []);
 
   const store = createStore(reducers, compose(applyMiddleware(thunk)));
 

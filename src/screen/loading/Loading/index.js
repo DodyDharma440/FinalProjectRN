@@ -10,7 +10,6 @@ const Loading = ({ navigation }) => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setFetching(true);
     dispatch(
       getUserData((success, err) => {
         if (success) {
