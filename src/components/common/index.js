@@ -7,6 +7,7 @@ import Alert from "./Alert";
 import Avatar from "./Avatar";
 import IconButton from "./IconButton";
 import CardImage from "./CardImage";
+import Card from "./Card";
 
 export {
   Button,
@@ -18,4 +19,5 @@ export {
   Avatar,
   IconButton,
   CardImage,
+  Card,
 };

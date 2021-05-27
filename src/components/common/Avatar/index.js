@@ -28,7 +28,7 @@ Avatar.propTypes = {
     PropTypes.node,
   ]),
   style: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
-  size: PropTypes.oneOf(["sm", "md", "lg"]),
+  size: PropTypes.oneOf(["sm", "md", "lg", "xl"]),
   variant: PropTypes.oneOf(["primary", "secondary", "default"]),
 };
 
@@ -50,6 +50,10 @@ const styles = StyleSheet.create({
       case "lg":
         width = 65;
         height = 65;
+        break;
+      case "xl":
+        width = 80;
+        height = 80;
         break;
 
       default:

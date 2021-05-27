@@ -2,13 +2,10 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import {
   StyleSheet,
-  View,
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
-  Alert as RnAlert,
 } from "react-native";
-import { useSelector, useDispatch } from "react-redux";
 import {
   TextMedium,
   TextBold,
@@ -20,11 +17,10 @@ import { Container } from "components/layout";
 import { useTheme } from "@react-navigation/native";
 import FeatherIcon from "react-native-vector-icons/Feather";
 import * as api from "api";
-import { logout } from "my-redux/actions/auth";
+import * as firebase from "firebase";
 
 const EditProfile = ({ navigation }) => {
-  const userData = useSelector((state) => state.auth.userData);
-  const dispatch = useDispatch();
+  const userData = firebase.auth().currentUser;
   const { colors } = useTheme();
 
   const defaultInputValue = {
