@@ -3,15 +3,23 @@ import PropTypes from "prop-types";
 import { StyleSheet, View } from "react-native";
 import { TextBold } from "components/common";
 import { useTheme } from "@react-navigation/native";
+import { useMergeStyle } from "hooks";
+import { generateColor } from "utils";
 
-const Avatar = ({ children }) => {
+const Avatar = ({ children, size, variant, style }) => {
   const { colors } = useTheme();
+  const mergedStyle = useMergeStyle(style, styles.container(size, variant));
 
   return (
-    <View style={styles.container(colors)}>
+    <View style={mergedStyle}>
       <TextBold style={styles.label}>{children}</TextBold>
     </View>
   );
+};
+
+Avatar.defaultProps = {
+  variant: "primary",
+  size: "md",
 };
 
 Avatar.propTypes = {
@@ -19,19 +27,44 @@ Avatar.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]),
+  style: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+  size: PropTypes.oneOf(["sm", "md", "lg"]),
+  variant: PropTypes.oneOf(["primary", "secondary", "default"]),
 };
 
 export default Avatar;
 
 const styles = StyleSheet.create({
-  container: (colors) => ({
-    width: 50,
-    height: 50,
-    backgroundColor: colors.primary,
-    borderRadius: 50,
-    justifyContent: "center",
-    alignItems: "center",
-  }),
+  container: (size, variant) => {
+    let width = 0;
+    let height = 0;
+    switch (size) {
+      case "sm":
+        width = 40;
+        height = 40;
+        break;
+      case "md":
+        width = 50;
+        height = 50;
+        break;
+      case "lg":
+        width = 65;
+        height = 65;
+        break;
+
+      default:
+        break;
+    }
+
+    return {
+      width,
+      height,
+      backgroundColor: generateColor(variant),
+      borderRadius: 50,
+      justifyContent: "center",
+      alignItems: "center",
+    };
+  },
   label: {
     color: "white",
     fontSize: 24,

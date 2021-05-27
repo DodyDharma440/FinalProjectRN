@@ -21,6 +21,20 @@ export const logout = () => {
   return firebase.auth().signOut();
 };
 
+export const updateProfile = (userData, name) => {
+  return userData.updateProfile({
+    displayName: name,
+  });
+};
+
+export const updateEmail = (userData, email) => {
+  return userData.updateEmail(email);
+};
+
+export const updatePassword = (userData, password) => {
+  return userData.updatePassword(password);
+};
+
 export const getMealsByCategory = (category) => {
   return apiRecipe.get(`/filter.php?c=${category}`);
 };

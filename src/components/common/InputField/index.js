@@ -11,7 +11,7 @@ const InputField = ({ leftIcon, rightIcon, autoFocus, style, ...props }) => {
 
   useEffect(() => {
     if (autoFocus && props.editable !== false) {
-      setTimeout(() => inputRef.current.focus(), 100);
+      setTimeout(() => inputRef.current.focus(), 10);
     }
   }, [autoFocus, inputRef, props.editable]);
 

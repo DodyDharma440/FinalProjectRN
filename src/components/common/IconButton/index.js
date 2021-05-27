@@ -32,13 +32,17 @@ IconButton.defaultProps = {
   variant: "filled",
   color: "primary",
   size: "md",
+  withSpacer: false,
 };
 
 IconButton.propTypes = {
   variant: PropTypes.oneOf(["filled", "outlined"]),
   color: PropTypes.oneOf(["primary", "secondary", "default"]),
   title: PropTypes.string,
-  size: PropTypes.string.isRequired,
+  size: PropTypes.oneOf(["sm", "md", "lg"]),
+  style: PropTypes.oneOfType([PropTypes.array, PropTypes.object]),
+  icon: PropTypes.element.isRequired,
+  withSpacer: PropTypes.bool,
 };
 
 export default IconButton;

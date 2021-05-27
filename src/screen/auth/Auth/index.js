@@ -51,7 +51,7 @@ const Auth = ({ route, navigation }) => {
               password: "",
               confirmPassword: "",
             });
-            navigation.replace("MainApp");
+            navigation.replace("Loading");
           }
 
           if (err) {
@@ -71,7 +71,7 @@ const Auth = ({ route, navigation }) => {
     dispatch(
       signIn(inputValue, (success, err) => {
         if (success) {
-          navigation.replace("MainApp");
+          navigation.replace("Loading");
         }
 
         if (err) {

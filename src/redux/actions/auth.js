@@ -8,14 +8,13 @@ export const signUp = (inputValue, cb) => {
   return async (dispatch) => {
     try {
       const res = await api.signUp(inputValue);
-      res.user.updateProfile({
+      const updatedName = await res.user.updateProfile({
         displayName: name,
       });
-      res.user.displayName = name;
 
       dispatch({
         type: AUTH,
-        data: res,
+        data: updatedName,
       });
       cb("success");
     } catch (error) {

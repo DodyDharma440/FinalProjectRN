@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { TextBold, TextMedium, TextRegular, Avatar } from "components/common";
+import { useSelector } from "react-redux";
+import { TextBold, TextMedium, Avatar } from "components/common";
 import { useTheme } from "@react-navigation/native";
 
 const MainHeader = () => {
   const { colors } = useTheme();
+  const userData = useSelector((state) => state.auth.userData);
   const [greetings, setGreetings] = useState("");
-  const name = "Dody";
+  const [user, setUser] = useState(userData);
 
   const makeGreetings = () => {
     const date = new Date();
@@ -23,25 +25,30 @@ const MainHeader = () => {
     }
   };
 
+  const name = user.displayName ? `, ${user.displayName}` : "";
+
   useEffect(() => {
     makeGreetings();
+    if (Object.keys(userData).length !== 0) {
+      setUser(userData);
+    }
 
     return () => {
       setGreetings("");
     };
-  }, []);
+  }, [userData]);
 
   return (
     <View style={styles.container}>
       <View style={styles.titleWrapper}>
         <TextBold style={styles.greeting}>
-          {`Good ${greetings}, ${name}`}
+          {`Good ${greetings}${name}`}
         </TextBold>
         <TextMedium style={styles.subtitle(colors)}>
           What do you want to cook?
         </TextMedium>
       </View>
-      <Avatar>{name.charAt(0)}</Avatar>
+      <Avatar>{user?.displayName?.charAt(0)}</Avatar>
     </View>
   );
 };

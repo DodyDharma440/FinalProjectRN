@@ -13,15 +13,15 @@ const Loading = ({ navigation }) => {
     dispatch(
       getUserData((success, err) => {
         if (success) {
-          navigation.replace("MainApp");
+          return setTimeout(() => navigation.replace("MainApp"), 1000);
         }
 
         if (err) {
-          navigation.replace("Auth");
+          return setTimeout(() => navigation.replace("Auth"), 1000);
         }
       })
     );
-  }, []);
+  }, [dispatch]);
 
   const { colors } = useTheme();
 

@@ -21,7 +21,7 @@ const useMergeStyle = (style, defaultStyle) => {
 
 useMergeStyle.propTypes = {
   style: PropTypes.object.isRequired,
-  fontFamily: PropTypes.object.isRequired,
+  defaultStyle: PropTypes.object.isRequired,
 };
 
 export default useMergeStyle;

@@ -19,7 +19,6 @@ import {
   IngredientCard,
 } from "components/products";
 import { getFirstChild, getLastChild } from "utils/getComponentChild";
-import * as firebase from "firebase";
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -27,10 +26,10 @@ const Home = ({ navigation }) => {
   const ingredientsState = useSelector((state) => state.ingredients);
 
   useEffect(() => {
-    console.log(firebase.auth().currentUser);
+    // console.log(firebase.auth().currentUser);
     dispatch(getRandomMeals());
     dispatch(getIngredientList());
-  }, []);
+  }, [dispatch]);
 
   const MealsSection = () => (
     <>
