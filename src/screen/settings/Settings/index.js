@@ -24,11 +24,6 @@ const Settings = ({ navigation }) => {
   const handleSignOut = () => {
     dispatch(
       logout((success, err) => {
-        if (success) {
-          navigation.replace("Auth");
-          return;
-        }
-
         if (err) {
           Alert.alert("Error", "Sign out failed. Please try again.");
         }

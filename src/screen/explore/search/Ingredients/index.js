@@ -1,13 +1,11 @@
-import React, { useState } from "react";
+import React from "react";
 import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import {
   StyleSheet,
-  Text,
   View,
   FlatList,
   ScrollView,
-  TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
 import { useTheme } from "@react-navigation/native";

@@ -25,8 +25,10 @@ const Search = ({ editable, ...props }) => {
   };
 
   useEffect(() => {
-    dispatch(resetSearchMeals());
-    dispatch(resetSearchIngredients());
+    setTimeout(() => {
+      dispatch(resetSearchMeals());
+      dispatch(resetSearchIngredients());
+    }, 20);
   }, [dispatch]);
 
   return (
@@ -34,8 +36,8 @@ const Search = ({ editable, ...props }) => {
       <InputField
         placeholder="Search by name"
         editable={editable}
-        autoFocus
         value={inputValue}
+        autoFocus
         onSubmitEditing={handleSubmit}
         onChangeText={(val) => setInputValue(val)}
         leftIcon={

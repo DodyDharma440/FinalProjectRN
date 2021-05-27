@@ -16,9 +16,10 @@ export const signUp = (inputValue, cb) => {
         type: AUTH,
         data: updatedName,
       });
-      cb("success");
+
+      cb && cb("success");
     } catch (error) {
-      cb(null, error);
+      cb && cb(null, error);
     }
   };
 };
@@ -31,9 +32,9 @@ export const signIn = (inputValue, cb) => {
         type: AUTH,
         data: res,
       });
-      cb("success");
+      cb && cb("success");
     } catch (error) {
-      cb(null, error);
+      cb && cb(null, error);
     }
   };
 };
@@ -45,9 +46,9 @@ export const logout = (cb) => {
       dispatch({
         type: LOGOUT,
       });
-      cb("success");
+      cb && cb("success");
     } catch (error) {
-      cb(null, error);
+      cb && cb(null, error);
     }
   };
 };
@@ -60,12 +61,12 @@ export const getUserData = (cb) => {
           type: GET_USER_DATA,
           data: user,
         });
-        cb("success");
+        cb && cb(user);
       } else {
         dispatch({
           type: LOGOUT,
         });
-        cb(null, "error");
+        cb && cb(null, "error");
       }
     });
   };

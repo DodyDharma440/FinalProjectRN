@@ -1,8 +1,14 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import { StyleSheet, Text, View, ScrollView, FlatList } from "react-native";
-import { getRandomMeals, getIngredientList } from "my-redux/actions/recipe";
+import { StyleSheet, View, ScrollView, FlatList } from "react-native";
+import {
+  getRandomMeals,
+  getIngredientList,
+  resetSearchMeals,
+  resetSearchIngredients,
+} from "my-redux/actions/recipe";
+import { getUserData } from "my-redux/actions/auth";
 import { Alert } from "components/common";
 import {
   Container,
@@ -26,8 +32,8 @@ const Home = ({ navigation }) => {
   const ingredientsState = useSelector((state) => state.ingredients);
 
   useEffect(() => {
-    // console.log(firebase.auth().currentUser);
     dispatch(getRandomMeals());
+    dispatch(getUserData());
     dispatch(getIngredientList());
   }, [dispatch]);
 
@@ -164,15 +170,15 @@ const Home = ({ navigation }) => {
         </View>
         <View style={[styles.horizontalSpacer, styles.searchWrapper]}>
           <Search
-            onPress={() =>
+            onPress={() => {
               navigation.navigate("Explore", {
                 screen: "Search",
                 initial: false,
                 params: {
                   screen: "Meals",
                 },
-              })
-            }
+              });
+            }}
             editable={false}
           />
         </View>

@@ -3,10 +3,11 @@ import { StyleSheet, View } from "react-native";
 import { useSelector } from "react-redux";
 import { TextBold, TextMedium, Avatar } from "components/common";
 import { useTheme } from "@react-navigation/native";
+import * as firebase from "firebase";
 
 const MainHeader = () => {
   const { colors } = useTheme();
-  const userData = useSelector((state) => state.auth.userData);
+  const userData = firebase.auth().currentUser;
   const [greetings, setGreetings] = useState("");
   const [user, setUser] = useState(userData);
 

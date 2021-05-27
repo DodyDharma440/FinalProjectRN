@@ -33,7 +33,7 @@ const Ingredients = ({ navigation }) => {
     if (ingredientsState.data.length === 0) {
       dispatch(getIngredientList());
     }
-  }, [dispatch, ingredientsState.data.length]);
+  }, [dispatch]);
 
   return (
     <Container>

@@ -18,8 +18,6 @@ const Meals = ({ navigation }) => {
   const mealsState = useSelector((state) => state.meals);
   const { colors } = useTheme();
 
-  console.log(mealsState.search.results);
-
   return (
     <Container>
       <ScrollView>
