@@ -1,20 +1,24 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import {
   StyleSheet,
-  Text,
-  View,
   FlatList,
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import { Container } from "components/layout";
+import { getIngredientList } from "my-redux/actions/recipe";
+import {
+  Container,
+  CardMediumSkeleton,
+  GridListContainer,
+} from "components/layout";
 import { TextMedium } from "components/common";
 import { IngredientCard } from "components/products";
 
 const Ingredients = ({ navigation }) => {
   const ingredientsState = useSelector((state) => state.ingredients);
+  const dispatch = useDispatch();
   const [dataPerLoad, setDataPerLoad] = useState(10);
   const [croppedData, setCroppedData] = useState(
     ingredientsState.data.slice(0, dataPerLoad)
@@ -25,12 +29,25 @@ const Ingredients = ({ navigation }) => {
     setCroppedData(ingredientsState.data.slice(0, dataPerLoad + 10));
   };
 
+  useEffect(() => {
+    if (ingredientsState.data.length === 0) {
+      dispatch(getIngredientList());
+    }
+  }, [dispatch, ingredientsState.data.length]);
+
   return (
     <Container>
       <ScrollView>
-        <View style={[styles.tileListWrapper, styles.horizontalSpacer]}>
+        <GridListContainer>
           {ingredientsState.loading ? (
-            <Text>Loading...</Text>
+            <FlatList
+              scrollEnabled={false}
+              data={[1, 2, 3, 4]}
+              keyExtractor={(item, index) => `${item}-${index}`}
+              numColumns={2}
+              renderItem={() => <CardMediumSkeleton />}
+              showsVerticalScrollIndicator={false}
+            />
           ) : (
             <>
               <FlatList
@@ -46,7 +63,7 @@ const Ingredients = ({ navigation }) => {
               </TouchableOpacity>
             </>
           )}
-        </View>
+        </GridListContainer>
       </ScrollView>
     </Container>
   );

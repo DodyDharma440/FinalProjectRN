@@ -11,7 +11,7 @@ import {
   ActivityIndicator,
 } from "react-native";
 import { useTheme } from "@react-navigation/native";
-import { Container } from "components/layout";
+import { Container, GridListContainer } from "components/layout";
 import { TextMedium, TextBold } from "components/common";
 import { IngredientCard } from "components/products";
 
@@ -22,17 +22,19 @@ const Ingredients = ({ navigation }) => {
   return (
     <Container>
       <ScrollView>
-        <View style={[styles.tileListWrapper, styles.horizontalSpacer]}>
-          {ingredientsState.search.searchValue && !ingredientsState.loading && (
-            <View style={styles.resultTextWrapper}>
-              <TextMedium style={styles.resultText}>
-                Search results for:{" "}
-              </TextMedium>
-              <TextBold style={styles.resultText}>
-                {`${ingredientsState.search.searchValue}`}
-              </TextBold>
-            </View>
-          )}
+        <GridListContainer>
+          {ingredientsState.search.searchValue &&
+            !ingredientsState.loading &&
+            ingredientsState.search.results.length > 0 && (
+              <View style={styles.resultTextWrapper}>
+                <TextMedium style={styles.resultText}>
+                  Search results for:{" "}
+                </TextMedium>
+                <TextBold style={styles.resultText}>
+                  {`${ingredientsState.search.searchValue}`}
+                </TextBold>
+              </View>
+            )}
 
           {ingredientsState.loading ? (
             <ActivityIndicator
@@ -52,7 +54,7 @@ const Ingredients = ({ navigation }) => {
               />
             </>
           )}
-        </View>
+        </GridListContainer>
       </ScrollView>
     </Container>
   );

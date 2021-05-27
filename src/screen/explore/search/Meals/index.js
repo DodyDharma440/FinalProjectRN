@@ -8,7 +8,7 @@ import {
   ScrollView,
   ActivityIndicator,
 } from "react-native";
-import { Container } from "components/layout";
+import { Container, GridListContainer } from "components/layout";
 import { Alert } from "components/common";
 import { MealCardMedium } from "components/products";
 import { useTheme } from "@react-navigation/native";
@@ -18,20 +18,24 @@ const Meals = ({ navigation }) => {
   const mealsState = useSelector((state) => state.meals);
   const { colors } = useTheme();
 
+  console.log(mealsState.search.results);
+
   return (
     <Container>
       <ScrollView>
-        <View style={[styles.tileListWrapper, styles.horizontalSpacer]}>
-          {mealsState.search.searchValue && !mealsState.loading && (
-            <View style={styles.resultTextWrapper}>
-              <TextMedium style={styles.resultText}>
-                Search results for:{" "}
-              </TextMedium>
-              <TextBold style={styles.resultText}>
-                {`${mealsState.search.searchValue}`}
-              </TextBold>
-            </View>
-          )}
+        <GridListContainer>
+          {mealsState.search.searchValue &&
+            !mealsState.loading &&
+            mealsState.search.results?.length > 0 && (
+              <View style={styles.resultTextWrapper}>
+                <TextMedium style={styles.resultText}>
+                  Search results for:{" "}
+                </TextMedium>
+                <TextBold style={styles.resultText}>
+                  {`${mealsState.search.searchValue}`}
+                </TextBold>
+              </View>
+            )}
           {mealsState.loading ? (
             <ActivityIndicator
               style={styles.loading}
@@ -52,7 +56,7 @@ const Meals = ({ navigation }) => {
               />
             </>
           )}
-        </View>
+        </GridListContainer>
       </ScrollView>
     </Container>
   );

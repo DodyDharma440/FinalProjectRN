@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
-import { StyleSheet, Text, View, FlatList, ScrollView } from "react-native";
-import { Container } from "components/layout";
+import { StyleSheet, View, FlatList, ScrollView } from "react-native";
+import {
+  Container,
+  CardMediumSkeleton,
+  GridListContainer,
+} from "components/layout";
 import { MealCardMedium, CategoryCard } from "components/products";
 import { getCategoryList, getMealsByCategory } from "my-redux/actions/recipe";
 import { getFirstChild, getLastChild } from "utils/getComponentChild";
@@ -46,9 +50,16 @@ const Meals = ({ navigation }) => {
             showsHorizontalScrollIndicator={false}
           />
         </View>
-        <View style={[styles.tileListWrapper, styles.horizontalSpacer]}>
+        <GridListContainer>
           {mealsState.loading ? (
-            <Text>Loading...</Text>
+            <FlatList
+              scrollEnabled={false}
+              data={[1, 2, 3, 4]}
+              keyExtractor={(item, index) => `${item}-${index}`}
+              numColumns={2}
+              renderItem={() => <CardMediumSkeleton />}
+              showsVerticalScrollIndicator={false}
+            />
           ) : (
             <FlatList
               scrollEnabled={false}
@@ -59,7 +70,7 @@ const Meals = ({ navigation }) => {
               showsVerticalScrollIndicator={false}
             />
           )}
-        </View>
+        </GridListContainer>
       </ScrollView>
     </Container>
   );
@@ -72,15 +83,8 @@ Meals.propTypes = {
 export default Meals;
 
 const styles = StyleSheet.create({
-  horizontalSpacer: {
-    marginHorizontal: 10,
-  },
   categoriesContainer: {
     paddingTop: 16,
     height: 100,
-  },
-  tileListWrapper: {
-    marginVertical: 16,
-    flex: 1,
   },
 });

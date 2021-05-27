@@ -1,5 +1,5 @@
-import React from "react";
-import { useNavigation } from "@react-navigation/native";
+import React, { useEffect } from "react";
+import { useNavigation, TabActions } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { Search } from "components/products";
@@ -22,6 +22,7 @@ const ExploreTab = () => {
         },
       }}
       swipeEnabled={false}
+      initialRouteName="Meals"
     >
       <Tab.Screen component={MealsExploreScreen} name="Meals" />
       <Tab.Screen component={IngredientsExploreScreen} name="Ingredients" />
@@ -37,6 +38,7 @@ const SearchTab = () => {
           fontFamily: "DMSans_700Bold",
         },
       }}
+      initialRouteName="Meals"
     >
       <Tab.Screen component={MealsSearchScreen} name="Meals" />
       <Tab.Screen component={IngredientsSearchScreen} name="Ingredients" />
