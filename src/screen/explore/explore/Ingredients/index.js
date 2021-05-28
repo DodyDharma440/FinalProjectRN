@@ -6,6 +6,7 @@ import {
   FlatList,
   ScrollView,
   TouchableOpacity,
+  RefreshControl,
 } from "react-native";
 import { getIngredientList } from "my-redux/actions/recipe";
 import {
@@ -15,6 +16,7 @@ import {
 } from "components/layout";
 import { TextMedium } from "components/common";
 import { IngredientCard } from "components/products";
+import { useRefreshControl } from "hooks";
 
 const Ingredients = ({ navigation }) => {
   const ingredientsState = useSelector((state) => state.ingredients);
@@ -23,6 +25,13 @@ const Ingredients = ({ navigation }) => {
   const [croppedData, setCroppedData] = useState(
     ingredientsState.data.slice(0, dataPerLoad)
   );
+  const { refresh, onRefresh } = useRefreshControl((setRefresh) => {
+    dispatch(getIngredientList());
+
+    if (!ingredientsState.loading) {
+      setRefresh(false);
+    }
+  });
 
   const handleLoadMore = () => {
     setDataPerLoad(dataPerLoad + 10);
@@ -37,7 +46,11 @@ const Ingredients = ({ navigation }) => {
 
   return (
     <Container>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
+        }
+      >
         <GridListContainer>
           {ingredientsState.loading ? (
             <FlatList

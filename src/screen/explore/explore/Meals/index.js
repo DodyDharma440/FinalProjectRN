@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useSelector, useDispatch } from "react-redux";
-import { StyleSheet, View, FlatList, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  ScrollView,
+  RefreshControl,
+} from "react-native";
 import {
   Container,
   CardMediumSkeleton,
@@ -10,11 +16,20 @@ import {
 import { MealCardMedium, CategoryCard } from "components/products";
 import { getCategoryList, getMealsByCategory } from "my-redux/actions/recipe";
 import { getFirstChild, getLastChild } from "utils/getComponentChild";
+import { useRefreshControl } from "hooks";
 
 const Meals = ({ navigation }) => {
   const dispatch = useDispatch();
   const mealsState = useSelector((state) => state.meals);
   const categoriesState = useSelector((state) => state.categories);
+  const { refresh, onRefresh } = useRefreshControl((setRefresh) => {
+    dispatch(getCategoryList());
+    dispatch(getMealsByCategory(currentCategory));
+
+    if (!categoriesState.loading && !mealsState.loading) {
+      setRefresh(false);
+    }
+  });
 
   const [currentCategory, setCurrentCategory] = useState("Beef");
 
@@ -32,7 +47,11 @@ const Meals = ({ navigation }) => {
 
   return (
     <Container>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
+        }
+      >
         <View style={[styles.categoriesContainer]}>
           <FlatList
             data={categoriesState.data}

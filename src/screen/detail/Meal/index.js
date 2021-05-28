@@ -1,5 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
-import { StyleSheet, View, Dimensions, Platform, FlatList } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Dimensions,
+  Platform,
+  FlatList,
+  RefreshControl,
+} from "react-native";
 import PropTypes from "prop-types";
 import * as api from "api";
 import { TextRegular, TextBold } from "components/common";
@@ -12,7 +19,7 @@ import HeaderImageScrollView, {
 import { useSelector, useDispatch } from "react-redux";
 import { getFirstChild, getLastChild } from "utils/getComponentChild";
 import * as Animatable from "react-native-animatable";
-import { useBookmarked } from "hooks";
+import { useBookmarked, useRefreshControl } from "hooks";
 import { addFavMeal, removeFavMeal } from "my-redux/actions/recipe";
 
 const MIN_HEIGHT = Platform.OS === "ios" ? 90 : 55;
@@ -30,6 +37,20 @@ const Meal = ({ route, navigation }) => {
     "meals",
     itemId
   );
+  const { refresh, onRefresh } = useRefreshControl((setRefresh) => {
+    const getDetailData = async () => {
+      try {
+        const { data } = await api.getDetailMeal(itemId);
+        setDetailData(data.meals[0]);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+
+    getDetailData();
+
+    setTimeout(() => setRefresh(false), 3000);
+  });
 
   const {
     idMeal,
@@ -190,6 +211,9 @@ const Meal = ({ route, navigation }) => {
   return (
     <Container>
       <HeaderImageScrollView
+        refreshControl={
+          <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
+        }
         bounces={true}
         minHeight={MIN_HEIGHT}
         maxHeight={MAX_HEIGHT}

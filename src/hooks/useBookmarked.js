@@ -8,26 +8,35 @@ const useBookmarked = (bookmarksState, type, id) => {
   });
 
   useEffect(() => {
-    bookmarksState.filter((bookmark) => {
-      switch (type) {
-        case "meals":
-          if (bookmark.idMeal === id) {
-            return setBookmarked({
-              isBookmarked: true,
-              bookmarkId: bookmark._id,
-            });
-          }
-          break;
+    let isMounted = true;
 
-        default:
-          setBookmarked({
-            isBookmarked: false,
-            bookmarkId: "0",
-          });
-          break;
-      }
-    });
-  }, [bookmarksState]);
+    const filterBookmarks = async () => {
+      await bookmarksState.filter((bookmark) => {
+        switch (type) {
+          case "meals":
+            if (bookmark.idMeal === id && isMounted) {
+              return setBookmarked({
+                isBookmarked: true,
+                bookmarkId: bookmark._id,
+              });
+            }
+            break;
+
+          default:
+            isMounted &&
+              setBookmarked({
+                isBookmarked: false,
+                bookmarkId: "0",
+              });
+            break;
+        }
+      });
+    };
+
+    filterBookmarks();
+
+    return () => (isMounted = false);
+  }, []);
 
   return [bookmarked, setBookmarked];
 };

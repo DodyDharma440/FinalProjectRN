@@ -43,7 +43,7 @@ const EditProfile = ({ navigation }) => {
 
   const [errorMessage, setErrorMessage] = useState([]);
 
-  const handleLogout = () => {
+  const handleSuccess = () => {
     setLoading(false);
 
     if (
@@ -99,10 +99,8 @@ const EditProfile = ({ navigation }) => {
       }
     }
 
-    handleLogout();
+    handleSuccess();
   };
-
-  console.log(errorMessage);
 
   return (
     <Container style={styles.container}>

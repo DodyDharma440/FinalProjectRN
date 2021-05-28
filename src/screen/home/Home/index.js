@@ -1,7 +1,13 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
-import { StyleSheet, View, ScrollView, FlatList } from "react-native";
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  FlatList,
+  RefreshControl,
+} from "react-native";
 import {
   getRandomMeals,
   getIngredientList,
@@ -24,11 +30,22 @@ import {
   IngredientCard,
 } from "components/products";
 import { getFirstChild, getLastChild } from "utils/getComponentChild";
+import { useRefreshControl } from "hooks";
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
   const mealsState = useSelector((state) => state.meals);
   const ingredientsState = useSelector((state) => state.ingredients);
+  const { refresh, onRefresh } = useRefreshControl((setRefresh) => {
+    dispatch(getRandomMeals());
+    dispatch(getUserData());
+    dispatch(getIngredientList());
+    dispatch(getFavMeals());
+
+    if (!mealsState.loading && !ingredientsState.loading) {
+      setRefresh(false);
+    }
+  });
 
   useEffect(() => {
     let isMounted = true;
@@ -170,7 +187,11 @@ const Home = ({ navigation }) => {
 
   return (
     <Container>
-      <ScrollView>
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
+        }
+      >
         <View style={[styles.horizontalSpacer, styles.headerWrapper]}>
           <MainHeader />
         </View>

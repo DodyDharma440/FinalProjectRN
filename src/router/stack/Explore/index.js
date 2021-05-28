@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { useNavigation, TabActions } from "@react-navigation/native";
+import React from "react";
+import { useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import { Search } from "components/products";
@@ -80,6 +80,15 @@ const Explore = () => {
       <Stack.Screen
         name="DetailMeal"
         component={DetailMealScreen}
+        options={{
+          headerTitle: false,
+          headerTintColor: "white",
+          headerTransparent: true,
+        }}
+      />
+      <Stack.Screen
+        name="DetailIngredient"
+        component={DetailIngredientScreen}
         options={{
           headerTitle: false,
           headerTintColor: "white",

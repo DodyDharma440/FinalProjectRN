@@ -17,7 +17,11 @@ const IngredientCard = ({ item }) => {
       <CardImage
         iconButton={<FaIcon name="bookmark-o" size={20} color="#000" />}
         buttonAction={() => {}}
-        onPress={() => {}}
+        onPress={() =>
+          navigation.push("DetailIngredient", {
+            itemId: idIngredient,
+          })
+        }
         image={{ uri: imageUrl }}
         label={strIngredient}
       />

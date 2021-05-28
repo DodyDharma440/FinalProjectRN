@@ -53,6 +53,15 @@ const Boookmarks = () => {
           headerTransparent: true,
         }}
       />
+      <Stack.Screen
+        name="DetailIngredient"
+        component={DetailIngredientScreen}
+        options={{
+          headerTitle: false,
+          headerTintColor: "white",
+          headerTransparent: true,
+        }}
+      />
     </Stack.Navigator>
   );
 };

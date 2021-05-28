@@ -1,25 +1,52 @@
-import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, TouchableOpacity, Image } from "react-native";
 import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 import { TextMedium, TextRegular } from "components/common";
-import { useTheme } from "@react-navigation/native";
+import { useTheme, useNavigation } from "@react-navigation/native";
 
-const IngredientCard = ({ item, onPress, isLastChild, isFirstChild }) => {
+const IngredientCard = ({ item, isLastChild, isFirstChild }) => {
+  const { ingredient, measure } = item;
   const { colors } = useTheme();
+  const navigation = useNavigation();
+  const ingredientsState = useSelector((state) => state.ingredients);
+  const [ingredientId, setIngredientId] = useState("");
   const imageName = item?.ingredient?.replace(/\s/g, "%20");
   const imageUrl = `https://www.themealdb.com/images/ingredients/${imageName}.png`;
 
-  if (item.ingredient !== null || item.measure !== null) {
+  useEffect(() => {
+    const lowerCaseIngredient =
+      ingredient && ingredient.length > 0
+        ? ingredient.toLowerCase()
+        : ingredient;
+
+    if (ingredient) {
+      ingredientsState.data.filter((ingredient) => {
+        if (lowerCaseIngredient === ingredient.strIngredient.toLowerCase()) {
+          return setIngredientId(ingredient.idIngredient);
+        }
+      });
+    }
+  }, [ingredient]);
+
+  if (ingredient !== null || measure !== null) {
     return (
       <>
-        {item.ingredient !== "" && item.measure !== " " && (
+        {ingredient !== "" && measure !== " " && (
           <View style={styles.container(isFirstChild, isLastChild)}>
-            <TouchableOpacity onPress={onPress} style={styles.card(colors)}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.push("DetailIngredient", {
+                  itemId: ingredientId,
+                })
+              }
+              style={styles.card(colors)}
+            >
               <Image style={styles.image} source={{ uri: imageUrl }} />
             </TouchableOpacity>
             <View style={{ marginHorizontal: 4 }}>
-              <TextMedium style={styles.title}>{item.ingredient}</TextMedium>
-              <TextRegular>{item.measure}</TextRegular>
+              <TextMedium style={styles.title}>{ingredient}</TextMedium>
+              <TextRegular>{measure}</TextRegular>
             </View>
           </View>
         )}
