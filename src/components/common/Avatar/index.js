@@ -1,10 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { StyleSheet, View } from "react-native";
-import { TextBold } from "components/common";
+import TextBold from "../TextBold";
 import { useTheme } from "@react-navigation/native";
 import { useMergeStyle } from "hooks";
-import { generateColor } from "utils";
+import { generateColor } from "utils/generateColor";
 
 const Avatar = ({ children, size, variant, style }) => {
   const { colors } = useTheme();

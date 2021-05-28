@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from "react";
-import { StyleSheet, Text, View, TextInput } from "react-native";
+import { StyleSheet, View, TextInput } from "react-native";
 import PropTypes from "prop-types";
 import { useTheme } from "@react-navigation/native";
 import { useMergeStyle } from "hooks";

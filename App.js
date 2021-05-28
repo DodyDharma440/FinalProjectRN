@@ -23,10 +23,7 @@ const App = () => {
   });
 
   useEffect(() => {
-    LogBox.ignoreLogs([
-      "VirtualizedLists should never be nested",
-      "Require cycles are allowed, but can result in uninitialized values",
-    ]);
+    LogBox.ignoreLogs(["VirtualizedLists should never be nested"]);
   }, []);
 
   const store = createStore(reducers, compose(applyMiddleware(thunk)));

@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { useTheme } from "@react-navigation/native";
 import { useMergeStyle } from "hooks";
-import { generateColor } from "utils";
+import { generateColor } from "utils/generateColor";
 import PropTypes from "prop-types";
 
 const IconButton = ({

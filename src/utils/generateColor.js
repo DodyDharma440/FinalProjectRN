@@ -1,6 +1,6 @@
 import theme from "theme";
 
-const generateColor = (colorType) => {
+export const generateColor = (colorType) => {
   const { colors } = theme;
 
   switch (colorType) {
@@ -32,5 +32,3 @@ const generateColor = (colorType) => {
       return "#fff";
   }
 };
-
-export default generateColor;

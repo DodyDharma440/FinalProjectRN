@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Platform, Keyboard } from "react-native";
+import { StyleSheet, View, Platform, Keyboard } from "react-native";
 import PropTypes from "prop-types";
-import { BottomTabItem } from "components/layout";
+import BottomTabItem from "../BottomTabItem";
 
 const BottomTab = ({ state, descriptors, navigation }) => {
   const [visible, setVisible] = useState(true);

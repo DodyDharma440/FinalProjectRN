@@ -1,9 +1,9 @@
 import React from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { TextRegular } from "components/common";
+import TextRegular from "../TextRegular";
 import { useTheme } from "@react-navigation/native";
 import { useMergeStyle } from "hooks";
-import { generateColor } from "utils";
+import { generateColor } from "utils/generateColor";
 import PropTypes from "prop-types";
 
 const Button = ({

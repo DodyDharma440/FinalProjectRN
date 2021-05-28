@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { StyleSheet, TouchableOpacity, ImageBackground } from "react-native";
-import { TextMedium, IconButton } from "components/common";
+import TextMedium from "../TextMedium";
+import IconButton from "../IconButton";
 
 const CardImage = ({ iconButton, buttonAction, onPress, image, label }) => {
   return (

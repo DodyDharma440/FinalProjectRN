@@ -2,16 +2,16 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { useTheme } from "@react-navigation/native";
 import PropTypes from "prop-types";
-import { TextMedium } from "components/common";
+import TextMedium from "../TextMedium";
 import { useMergeStyle } from "hooks";
-import { generateColor } from "utils";
+import { generateColor } from "utils/generateColor";
 
 const Alert = ({ children, variant, style, ...props }) => {
   const { colors } = useTheme();
   const mergedStyle = useMergeStyle(style, styles.container(variant));
 
   return (
-    <View style={mergedStyle}>
+    <View {...props} style={mergedStyle}>
       <TextMedium style={styles.text(variant)}>{children}</TextMedium>
     </View>
   );
