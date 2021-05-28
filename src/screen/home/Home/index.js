@@ -60,34 +60,7 @@ const Home = ({ navigation }) => {
         </ListHeader>
       </View>
       <View>
-        {mealsState.loading ? (
-          <>
-            <View style={{ marginLeft: 12 }}>
-              <FlatList
-                scrollEnabled={false}
-                data={[1, 2, 3, 4]}
-                keyExtractor={(item, index) => `${item}-${index}`}
-                horizontal
-                renderItem={() => <CardLargeSkeleton />}
-                showsHorizontalScrollIndicator={false}
-              />
-            </View>
-            <GridListContainer>
-              <FlatList
-                scrollEnabled={false}
-                numColumns={2}
-                data={[1, 2, 3, 4]}
-                keyExtractor={(item, index) => `${item}-${index}`}
-                renderItem={() => <CardMediumSkeleton />}
-                showsVerticalScrollIndicator={false}
-              />
-            </GridListContainer>
-          </>
-        ) : mealsState.errorMessage ? (
-          <Alert style={styles.horizontalSpacer} variant="danger">
-            {mealsState.errorMessage}
-          </Alert>
-        ) : (
+        {mealsState.data?.length > 0 ? (
           <>
             <FlatList
               data={mealsState.data.slice(0, 5)}
@@ -109,6 +82,33 @@ const Home = ({ navigation }) => {
                 data={mealsState.data.slice(6, 12)}
                 keyExtractor={(item) => item.idMeal}
                 renderItem={({ item }) => <MealCardMedium item={item} />}
+                showsVerticalScrollIndicator={false}
+              />
+            </GridListContainer>
+          </>
+        ) : mealsState.errorMessage ? (
+          <Alert style={styles.horizontalSpacer} variant="danger">
+            {mealsState.errorMessage}
+          </Alert>
+        ) : (
+          <>
+            <View style={{ marginLeft: 12 }}>
+              <FlatList
+                scrollEnabled={false}
+                data={[1, 2, 3, 4]}
+                keyExtractor={(item, index) => `${item}-${index}`}
+                horizontal
+                renderItem={() => <CardLargeSkeleton />}
+                showsHorizontalScrollIndicator={false}
+              />
+            </View>
+            <GridListContainer>
+              <FlatList
+                scrollEnabled={false}
+                numColumns={2}
+                data={[1, 2, 3, 4]}
+                keyExtractor={(item, index) => `${item}-${index}`}
+                renderItem={() => <CardMediumSkeleton />}
                 showsVerticalScrollIndicator={false}
               />
             </GridListContainer>

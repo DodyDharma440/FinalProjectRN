@@ -97,7 +97,13 @@ const MealCardLarge = ({ item, isFirstChild, isLastChild }) => {
             }
           />
           <View style={styles.titleWrapper}>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.push("DetailMeal", {
+                  itemId: idMeal,
+                })
+              }
+            >
               <TextBold numberOfLines={2} style={styles.title}>
                 {strMeal}
               </TextBold>

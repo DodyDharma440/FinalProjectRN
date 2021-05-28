@@ -9,6 +9,7 @@ import {
   MealsSearchScreen,
   IngredientsSearchScreen,
 } from "screen/explore";
+import { DetailIngredientScreen, DetailMealScreen } from "screen/detail";
 
 const Stack = createStackNavigator();
 const Tab = createMaterialTopTabNavigator();
@@ -74,6 +75,15 @@ const Explore = () => {
           headerStyle: {
             elevation: 0,
           },
+        }}
+      />
+      <Stack.Screen
+        name="DetailMeal"
+        component={DetailMealScreen}
+        options={{
+          headerTitle: false,
+          headerTintColor: "white",
+          headerTransparent: true,
         }}
       />
     </Stack.Navigator>

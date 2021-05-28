@@ -125,14 +125,6 @@ export const searchMeals = (searchValue) => {
   };
 };
 
-export const resetSearchMeals = () => {
-  return async (dispatch) => {
-    dispatch({
-      type: RESET_SEARCH_MEALS,
-    });
-  };
-};
-
 export const getFavMeals = () => {
   return async (dispatch) => {
     try {
@@ -229,14 +221,6 @@ export const searchIngredients = (searchValue) => {
         },
       });
     }, 1000);
-  };
-};
-
-export const resetSearchIngredients = () => {
-  return async (dispatch) => {
-    dispatch({
-      type: RESET_SEARCH_INGREDIENTS,
-    });
   };
 };
 

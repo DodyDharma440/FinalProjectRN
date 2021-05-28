@@ -64,8 +64,9 @@ const styles = StyleSheet.create({
         width = 60;
         height = 60;
         break;
-
       default:
+        width = 50;
+        height = 50;
         break;
     }
 
@@ -96,7 +97,9 @@ const styles = StyleSheet.create({
         };
 
       default:
-        break;
+        return {
+          backgroundColor: "#fff",
+        };
     }
   },
 });

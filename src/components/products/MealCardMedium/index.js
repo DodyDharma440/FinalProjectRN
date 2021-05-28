@@ -58,7 +58,11 @@ const MealCardMedium = ({ item }) => {
           />
         }
         buttonAction={handleSetBookmark}
-        onPress={() => {}}
+        onPress={() =>
+          navigation.push("DetailMeal", {
+            itemId: idMeal,
+          })
+        }
         image={{ uri: strMealThumb }}
         label={strMeal}
       />

@@ -26,8 +26,8 @@ const Meals = ({ navigation }) => {
   };
 
   useEffect(() => {
-    dispatch(getMealsByCategory(currentCategory));
     dispatch(getCategoryList());
+    dispatch(getMealsByCategory(currentCategory));
   }, [dispatch]);
 
   return (
