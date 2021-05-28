@@ -9,7 +9,7 @@ import {
   AuthStack,
   HomeStack,
   ExploreStack,
-  BookmarkStack,
+  BookmarksStack,
   SettingsStack,
 } from "router/stack";
 import { BottomTab } from "components/layout";
@@ -26,7 +26,7 @@ const MainApp = () => {
     >
       <Tab.Screen name="Home" component={HomeStack} />
       <Tab.Screen name="Explore" component={ExploreStack} />
-      <Tab.Screen name="Bookmark" component={BookmarkStack} />
+      <Tab.Screen name="Bookmark" component={BookmarksStack} />
       <Tab.Screen name="Settings" component={SettingsStack} />
     </Tab.Navigator>
   );

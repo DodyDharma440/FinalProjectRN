@@ -13,7 +13,14 @@ import {
   FETCHING_CATEGORIES,
   FETCH_CATEGORIES_ERROR,
   GET_CATEGORIES,
+  GET_FAV_MEALS,
+  GET_FAV_INGREDIENTS,
+  ADD_FAV_MEAL,
+  ADD_FAV_INGREDIENT,
+  REMOVE_FAV_MEAL,
+  REMOVE_FAV_INGREDIENT,
 } from "my-redux/types";
+import { Alert } from "react-native";
 import * as api from "api";
 
 export const getRandomMeals = () => {
@@ -123,6 +130,54 @@ export const resetSearchMeals = () => {
     dispatch({
       type: RESET_SEARCH_MEALS,
     });
+  };
+};
+
+export const getFavMeals = () => {
+  return async (dispatch) => {
+    try {
+      const { data } = await api.getFavMeals();
+      dispatch({
+        type: GET_FAV_MEALS,
+        payload: data.meals,
+      });
+    } catch (error) {
+      Alert.alert("Error", error.message);
+    }
+  };
+};
+
+export const addFavMeal = (value, cb) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await api.addFavMeal(value);
+      dispatch({
+        type: ADD_FAV_MEAL,
+        payload: data.newData,
+      });
+      cb && cb(data.newData);
+    } catch (error) {
+      const errorMessage = error.response.data
+        ? error.response.data.message
+        : error.message;
+
+      Alert.alert("Error", errorMessage);
+    }
+  };
+};
+
+export const removeFavMeal = (id, cb) => {
+  return async (dispatch) => {
+    try {
+      await api.removeFavMeal(id);
+      dispatch({
+        type: REMOVE_FAV_MEAL,
+        id,
+      });
+      cb && cb();
+    } catch (error) {
+      Alert.alert("Error", error.message);
+    }
   };
 };
 

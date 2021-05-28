@@ -14,6 +14,7 @@ const ingredients = {
     results: [],
     searchValue: null,
   },
+  favourites: [],
 };
 
 const reducer = (state = ingredients, action) => {

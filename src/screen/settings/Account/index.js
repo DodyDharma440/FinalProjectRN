@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { StyleSheet, View, ScrollView } from "react-native";
 import { useTheme } from "@react-navigation/native";
+import { useSelector } from "react-redux";
 import { Container } from "components/layout";
 import { Avatar, TextMedium, Button, Card } from "components/common";
 import * as firebase from "firebase";
@@ -9,6 +10,7 @@ import * as firebase from "firebase";
 const Account = ({ navigation }) => {
   const userData = firebase.auth().currentUser;
   const { colors } = useTheme();
+  const bookmarksMeal = useSelector((state) => state.meals.bookmarks);
 
   return (
     <Container style={styles.container}>
@@ -31,7 +33,7 @@ const Account = ({ navigation }) => {
             <TextMedium style={styles.label(colors)}>
               Meals Bookmarked
             </TextMedium>
-            <TextMedium style={styles.title}>10</TextMedium>
+            <TextMedium style={styles.title}>{bookmarksMeal.length}</TextMedium>
           </View>
           <View style={styles.listItem(colors)}>
             <TextMedium style={styles.label(colors)}>

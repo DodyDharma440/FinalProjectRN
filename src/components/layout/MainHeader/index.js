@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import { useSelector } from "react-redux";
 import { TextBold, TextMedium, Avatar } from "components/common";
 import { useTheme } from "@react-navigation/native";
 import * as firebase from "firebase";
 
 const MainHeader = () => {
   const { colors } = useTheme();
-  const userData = firebase.auth().currentUser;
+  const user = firebase.auth().currentUser;
   const [greetings, setGreetings] = useState("");
-  const [user, setUser] = useState(userData);
 
   const makeGreetings = () => {
     const date = new Date();
@@ -30,14 +28,11 @@ const MainHeader = () => {
 
   useEffect(() => {
     makeGreetings();
-    if (Object.keys(userData).length !== 0) {
-      setUser(userData);
-    }
 
     return () => {
       setGreetings("");
     };
-  }, [userData]);
+  }, []);
 
   return (
     <View style={styles.container}>

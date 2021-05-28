@@ -5,8 +5,7 @@ import { StyleSheet, View, ScrollView, FlatList } from "react-native";
 import {
   getRandomMeals,
   getIngredientList,
-  resetSearchMeals,
-  resetSearchIngredients,
+  getFavMeals,
 } from "my-redux/actions/recipe";
 import { getUserData } from "my-redux/actions/auth";
 import { Alert } from "components/common";
@@ -32,9 +31,16 @@ const Home = ({ navigation }) => {
   const ingredientsState = useSelector((state) => state.ingredients);
 
   useEffect(() => {
-    dispatch(getRandomMeals());
-    dispatch(getUserData());
-    dispatch(getIngredientList());
+    let isMounted = true;
+
+    if (isMounted) {
+      dispatch(getRandomMeals());
+      dispatch(getUserData());
+      dispatch(getIngredientList());
+      dispatch(getFavMeals());
+    }
+
+    return () => (isMounted = false);
   }, [dispatch]);
 
   const MealsSection = () => (
