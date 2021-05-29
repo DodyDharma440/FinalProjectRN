@@ -20,7 +20,11 @@ import { useSelector, useDispatch } from "react-redux";
 import { getFirstChild, getLastChild } from "utils/getComponentChild";
 import * as Animatable from "react-native-animatable";
 import { useBookmarked, useRefreshControl } from "hooks";
-import { addFavMeal, removeFavMeal } from "my-redux/actions/recipe";
+import {
+  addFavMeal,
+  removeFavMeal,
+  getFavMeals,
+} from "my-redux/actions/recipe";
 
 const MIN_HEIGHT = Platform.OS === "ios" ? 90 : 55;
 const MAX_HEIGHT = 300;
@@ -48,6 +52,7 @@ const Meal = ({ route, navigation }) => {
     };
 
     getDetailData();
+    dispatch(getFavMeals());
 
     setTimeout(() => setRefresh(false), 3000);
   });

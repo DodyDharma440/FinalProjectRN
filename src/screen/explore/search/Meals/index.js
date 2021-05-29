@@ -15,38 +15,39 @@ import { useTheme } from "@react-navigation/native";
 import { TextMedium, TextBold } from "components/common";
 
 const Meals = ({ navigation }) => {
-  const mealsState = useSelector((state) => state.meals);
+  const searchState = useSelector((state) => state.search);
+  const { meals } = searchState;
   const { colors } = useTheme();
 
   return (
     <Container>
       <ScrollView>
         <GridListContainer>
-          {mealsState.search.searchValue &&
-            !mealsState.loading &&
-            mealsState.search.results?.length > 0 && (
+          {meals.inputValue &&
+            !searchState.loading &&
+            meals.results?.length > 0 && (
               <View style={styles.resultTextWrapper}>
                 <TextMedium style={styles.resultText}>
                   Search results for:{" "}
                 </TextMedium>
                 <TextBold style={styles.resultText}>
-                  {`${mealsState.search.searchValue}`}
+                  {`${meals.inputValue}`}
                 </TextBold>
               </View>
             )}
-          {mealsState.loading ? (
+          {searchState.loading ? (
             <ActivityIndicator
               style={styles.loading}
               size="large"
               color={colors.primary}
             />
-          ) : mealsState.errorMessage ? (
-            <Alert variant="danger">{mealsState.errorMessage}</Alert>
+          ) : meals.errorMessage ? (
+            <Alert variant="danger">{meals.errorMessage}</Alert>
           ) : (
             <>
               <FlatList
                 scrollEnabled={false}
-                data={mealsState.search.results}
+                data={meals.results}
                 keyExtractor={(item) => item.idMeal}
                 numColumns={2}
                 renderItem={({ item }) => <MealCardMedium item={item} />}

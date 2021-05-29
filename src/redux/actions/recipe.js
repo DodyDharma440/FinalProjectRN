@@ -4,12 +4,12 @@ import {
   GET_MEALS,
   GET_MEALS_BY_CATEGORY,
   SEARCH_MEALS,
-  RESET_SEARCH_MEALS,
   FETCHING_INGREDIENTS,
   FETCH_INGREDIENTS_ERROR,
   GET_INGREDIENTS,
   SEARCH_INGREDIENTS,
-  RESET_SEARCH_INGREDIENTS,
+  SEARCHING,
+  SEARCH_ERROR,
   FETCHING_CATEGORIES,
   FETCH_CATEGORIES_ERROR,
   GET_CATEGORIES,
@@ -104,7 +104,7 @@ export const getMealsByIngredient = (ingredient) => {
 export const searchMeals = (searchValue) => {
   return async (dispatch) => {
     dispatch({
-      type: FETCHING_MEALS,
+      type: SEARCHING,
     });
 
     try {
@@ -118,7 +118,7 @@ export const searchMeals = (searchValue) => {
       });
     } catch (error) {
       dispatch({
-        type: FETCH_MEALS_ERROR,
+        type: SEARCH_ERROR,
         error: error.message,
       });
     }
@@ -204,10 +204,6 @@ export const getIngredientList = () => {
 
 export const searchIngredients = (searchValue) => {
   return async (dispatch, getState) => {
-    dispatch({
-      type: FETCHING_INGREDIENTS,
-    });
-
     const ingredients = await getState().ingredients.data;
 
     if (ingredients.length === 0) {
@@ -219,16 +215,13 @@ export const searchIngredients = (searchValue) => {
         .toLowerCase()
         .includes(searchValue.toLowerCase());
     });
-
-    setTimeout(() => {
-      return dispatch({
-        type: SEARCH_INGREDIENTS,
-        payload: {
-          data: searchValue === "" ? [] : filterIngredients,
-          searchValue,
-        },
-      });
-    }, 1000);
+    dispatch({
+      type: SEARCH_INGREDIENTS,
+      payload: {
+        data: searchValue === "" ? [] : filterIngredients,
+        searchValue,
+      },
+    });
   };
 };
 

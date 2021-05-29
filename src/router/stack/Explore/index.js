@@ -58,7 +58,7 @@ const Explore = () => {
         options={{
           headerTitle: () => (
             <Search
-              onPress={() => navigation.navigate("Search")}
+              onPress={() => navigation.push("Search")}
               editable={false}
             />
           ),

@@ -11,6 +11,9 @@ const Account = ({ navigation }) => {
   const userData = firebase.auth().currentUser;
   const { colors } = useTheme();
   const bookmarksMeal = useSelector((state) => state.meals.bookmarks);
+  const bookmarksIngredient = useSelector(
+    (state) => state.ingredients.bookmarks
+  );
 
   return (
     <Container style={styles.container}>
@@ -39,7 +42,9 @@ const Account = ({ navigation }) => {
             <TextMedium style={styles.label(colors)}>
               Ingredients Bookmarked
             </TextMedium>
-            <TextMedium style={styles.title}>1</TextMedium>
+            <TextMedium style={styles.title}>
+              {bookmarksIngredient.length}
+            </TextMedium>
           </View>
         </Card>
         <Button

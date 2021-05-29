@@ -3,8 +3,6 @@ import {
   FETCH_MEALS_ERROR,
   GET_MEALS,
   GET_MEALS_BY_CATEGORY,
-  SEARCH_MEALS,
-  RESET_SEARCH_MEALS,
   GET_FAV_MEALS,
   ADD_FAV_MEAL,
   REMOVE_FAV_MEAL,
@@ -14,10 +12,6 @@ const meals = {
   loading: false,
   errorMessage: null,
   data: [],
-  search: {
-    results: [],
-    inputValue: null,
-  },
   switchedMeals: [],
   bookmarks: [],
 };
@@ -49,26 +43,6 @@ const reducer = (state = meals, action) => {
         ...state,
         loading: false,
         switchedMeals: action.payload,
-      };
-
-    case SEARCH_MEALS:
-      return {
-        ...state,
-        loading: false,
-        search: {
-          results: action.payload.data,
-          searchValue: action.payload.searchValue,
-        },
-      };
-
-    case RESET_SEARCH_MEALS:
-      return {
-        ...state,
-        loading: false,
-        search: {
-          results: [],
-          searchValue: null,
-        },
       };
 
     case GET_FAV_MEALS:

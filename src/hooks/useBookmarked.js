@@ -45,7 +45,7 @@ const useBookmarked = (bookmarksState, type, id) => {
     filterBookmarks();
 
     return () => (isMounted = false);
-  }, []);
+  }, [type, bookmarksState]);
 
   return [bookmarked, setBookmarked];
 };

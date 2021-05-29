@@ -20,7 +20,11 @@ import { TextRegular, TextBold } from "components/common";
 import { MealCardMedium } from "components/products";
 import { Header } from "components/product-detail";
 import { useRefreshControl, useBookmarked } from "hooks";
-import { addFavIngredient, removeFavIngredient } from "my-redux/actions/recipe";
+import {
+  addFavIngredient,
+  removeFavIngredient,
+  getFavIngredients,
+} from "my-redux/actions/recipe";
 
 const MIN_HEIGHT = Platform.OS === "ios" ? 90 : 55;
 const MAX_HEIGHT = 300;
@@ -33,18 +37,19 @@ const Ingredient = ({ route, navigation }) => {
   const ingredientsState = useSelector((state) => state.ingredients);
   const [detailData, setDetailData] = useState({});
   const { strIngredient, idIngredient, strDescription } = detailData;
-  const [meals, setMeals] = useState([]);
-  const { refresh, onRefresh } = useRefreshControl((setRefresh) => {
-    getDetailData();
-
-    setTimeout(() => setRefresh(false), 3000);
-  });
   const bookmarksState = useSelector((state) => state.ingredients.bookmarks);
   const [{ isBookmarked, bookmarkId }, setBookmarked] = useBookmarked(
     bookmarksState,
     "ingredients",
-    idIngredient
+    itemId
   );
+  const [meals, setMeals] = useState([]);
+  const { refresh, onRefresh } = useRefreshControl((setRefresh) => {
+    getDetailData();
+    dispatch(getFavIngredients());
+
+    setTimeout(() => setRefresh(false), 3000);
+  });
 
   const imageName = strIngredient && strIngredient.replace(/\s/g, "%20");
   const imageUrl = `https://www.themealdb.com/images/ingredients/${imageName}.png`;

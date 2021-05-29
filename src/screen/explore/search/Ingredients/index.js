@@ -14,27 +14,28 @@ import { TextMedium, TextBold } from "components/common";
 import { IngredientCard } from "components/products";
 
 const Ingredients = ({ navigation }) => {
-  const ingredientsState = useSelector((state) => state.ingredients);
+  const searchState = useSelector((state) => state.search);
+  const { ingredients } = searchState;
   const { colors } = useTheme();
 
   return (
     <Container>
       <ScrollView>
         <GridListContainer>
-          {ingredientsState.search.searchValue &&
-            !ingredientsState.loading &&
-            ingredientsState.search.results.length > 0 && (
+          {ingredients.inputValue &&
+            !searchState.loading &&
+            ingredients.results.length > 0 && (
               <View style={styles.resultTextWrapper}>
                 <TextMedium style={styles.resultText}>
                   Search results for:{" "}
                 </TextMedium>
                 <TextBold style={styles.resultText}>
-                  {`${ingredientsState.search.searchValue}`}
+                  {`${ingredients.inputValue}`}
                 </TextBold>
               </View>
             )}
 
-          {ingredientsState.loading ? (
+          {searchState.loading ? (
             <ActivityIndicator
               style={styles.loading}
               size="large"
@@ -44,7 +45,7 @@ const Ingredients = ({ navigation }) => {
             <>
               <FlatList
                 scrollEnabled={false}
-                data={ingredientsState.search.results}
+                data={ingredients.results}
                 keyExtractor={(item) => item.idIngredient}
                 numColumns={2}
                 renderItem={({ item }) => <IngredientCard item={item} />}

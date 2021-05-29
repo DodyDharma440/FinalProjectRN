@@ -57,6 +57,7 @@ const Home = ({ navigation }) => {
       dispatch(getUserData());
       dispatch(getIngredientList());
       dispatch(getFavMeals());
+      dispatch(getFavIngredients());
     }
 
     return () => (isMounted = false);
@@ -203,9 +204,6 @@ const Home = ({ navigation }) => {
               navigation.navigate("Explore", {
                 screen: "Search",
                 initial: false,
-                params: {
-                  screen: "Meals",
-                },
               });
             }}
             editable={false}

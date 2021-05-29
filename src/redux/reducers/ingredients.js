@@ -2,8 +2,6 @@ import {
   FETCHING_INGREDIENTS,
   FETCH_ERROR,
   GET_INGREDIENTS,
-  SEARCH_INGREDIENTS,
-  RESET_SEARCH_INGREDIENTS,
   GET_FAV_INGREDIENTS,
   ADD_FAV_INGREDIENT,
   REMOVE_FAV_INGREDIENT,
@@ -13,10 +11,6 @@ const ingredients = {
   loading: false,
   errorMessage: null,
   data: [],
-  search: {
-    results: [],
-    searchValue: null,
-  },
   bookmarks: [],
 };
 
@@ -40,26 +34,6 @@ const reducer = (state = ingredients, action) => {
         ...state,
         loading: false,
         data: action.payload,
-      };
-
-    case SEARCH_INGREDIENTS:
-      return {
-        ...state,
-        loading: false,
-        search: {
-          results: action.payload.data,
-          searchValue: action.payload.searchValue,
-        },
-      };
-
-    case RESET_SEARCH_INGREDIENTS:
-      return {
-        ...state,
-        loading: false,
-        search: {
-          results: [],
-          searchValue: null,
-        },
       };
 
     case GET_FAV_INGREDIENTS:
