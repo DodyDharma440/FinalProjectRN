@@ -20,9 +20,11 @@ import * as api from "api";
 import { useRefreshControl } from "hooks";
 
 const Meals = ({ navigation }) => {
-  const [loading, setLoading] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [categoriesLoading, setCategoriesLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [switchedMeals, setSwitchedMeals] = useState([]);
+  const [currentCategory, setCurrentCategory] = useState("Beef");
   const { refresh, onRefresh } = useRefreshControl((setRefresh) => {
     setLoading(true);
     getCategories();
@@ -33,9 +35,8 @@ const Meals = ({ navigation }) => {
     }
   });
 
-  const [currentCategory, setCurrentCategory] = useState("Beef");
-
   const getMealsByCategory = async (category) => {
+    setLoading(true);
     try {
       const { data } = await api.getMealsByCategory(category);
       setSwitchedMeals(data.meals);
@@ -47,18 +48,18 @@ const Meals = ({ navigation }) => {
   };
 
   const getCategories = async () => {
+    setCategoriesLoading(true);
     try {
       const { data } = await api.getCategoryList();
       setCategories(data.categories);
-      setLoading(false);
+      setCategoriesLoading(false);
     } catch (error) {
-      setLoading(false);
+      setCategoriesLoading(false);
       Alert.alert("Error", error.message);
     }
   };
 
   const handleSwitchCategory = (category) => {
-    setLoading(true);
     setCurrentCategory(category);
     if (category !== currentCategory) {
       getMealsByCategory(category);
@@ -78,59 +79,58 @@ const Meals = ({ navigation }) => {
           <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
         }
       >
-        {loading ? (
-          <>
-            <View style={[styles.categoriesContainer, { marginLeft: 12 }]}>
-              <FlatList
-                data={[1, 2, 3, 4, 5, 6]}
-                keyExtractor={(item, index) => `${item}-${index}`}
-                renderItem={() => <CategorySkeleton />}
-                horizontal
-                showsHorizontalScrollIndicator={false}
-                scrollEnabled={false}
-              />
-            </View>
-            <GridListContainer>
-              <FlatList
-                scrollEnabled={false}
-                data={[1, 2, 3, 4]}
-                keyExtractor={(item, index) => `${item}-${index}`}
-                numColumns={2}
-                renderItem={() => <CardMediumSkeleton />}
-                showsVerticalScrollIndicator={false}
-              />
-            </GridListContainer>
-          </>
+        {categoriesLoading ? (
+          <View style={[styles.categoriesContainer, { marginLeft: 12 }]}>
+            <FlatList
+              data={[1, 2, 3, 4, 5, 6]}
+              keyExtractor={(item, index) => `${item}-${index}`}
+              renderItem={() => <CategorySkeleton />}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              scrollEnabled={false}
+            />
+          </View>
         ) : (
-          <>
-            <View style={[styles.categoriesContainer]}>
-              <FlatList
-                data={categories}
-                keyExtractor={(item) => item.idCategory}
-                horizontal
-                renderItem={({ item, index }) => (
-                  <CategoryCard
-                    item={item}
-                    isFirstChild={getFirstChild(index, categories.length)}
-                    isLastChild={getLastChild(index, categories.length)}
-                    currentCategory={currentCategory}
-                    onSwitchCategory={handleSwitchCategory}
-                  />
-                )}
-                showsHorizontalScrollIndicator={false}
-              />
-            </View>
-            <GridListContainer>
-              <FlatList
-                scrollEnabled={false}
-                data={switchedMeals}
-                keyExtractor={(item) => item.idMeal}
-                numColumns={2}
-                renderItem={({ item }) => <MealCardMedium item={item} />}
-                showsVerticalScrollIndicator={false}
-              />
-            </GridListContainer>
-          </>
+          <View style={[styles.categoriesContainer]}>
+            <FlatList
+              data={categories}
+              keyExtractor={(item) => item.idCategory}
+              horizontal
+              renderItem={({ item, index }) => (
+                <CategoryCard
+                  item={item}
+                  isFirstChild={getFirstChild(index, categories.length)}
+                  isLastChild={getLastChild(index, categories.length)}
+                  currentCategory={currentCategory}
+                  onSwitchCategory={handleSwitchCategory}
+                />
+              )}
+              showsHorizontalScrollIndicator={false}
+            />
+          </View>
+        )}
+        {loading ? (
+          <GridListContainer>
+            <FlatList
+              scrollEnabled={false}
+              data={[1, 2, 3, 4]}
+              keyExtractor={(item, index) => `${item}-${index}`}
+              numColumns={2}
+              renderItem={() => <CardMediumSkeleton />}
+              showsVerticalScrollIndicator={false}
+            />
+          </GridListContainer>
+        ) : (
+          <GridListContainer>
+            <FlatList
+              scrollEnabled={false}
+              data={switchedMeals}
+              keyExtractor={(item) => item.idMeal}
+              numColumns={2}
+              renderItem={({ item }) => <MealCardMedium item={item} />}
+              showsVerticalScrollIndicator={false}
+            />
+          </GridListContainer>
         )}
       </ScrollView>
     </Container>
