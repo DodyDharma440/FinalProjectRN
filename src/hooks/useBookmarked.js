@@ -22,6 +22,15 @@ const useBookmarked = (bookmarksState, type, id) => {
             }
             break;
 
+          case "ingredients":
+            if (bookmark.idIngredient === id && isMounted) {
+              return setBookmarked({
+                isBookmarked: true,
+                bookmarkId: bookmark._id,
+              });
+            }
+            break;
+
           default:
             isMounted &&
               setBookmarked({

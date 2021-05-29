@@ -12,6 +12,7 @@ import {
   getRandomMeals,
   getIngredientList,
   getFavMeals,
+  getFavIngredients,
 } from "my-redux/actions/recipe";
 import { getUserData } from "my-redux/actions/auth";
 import { Alert } from "components/common";
@@ -41,6 +42,7 @@ const Home = ({ navigation }) => {
     dispatch(getUserData());
     dispatch(getIngredientList());
     dispatch(getFavMeals());
+    dispatch(getFavIngredients());
 
     if (!mealsState.loading && !ingredientsState.loading) {
       setRefresh(false);

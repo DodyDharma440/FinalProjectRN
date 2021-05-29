@@ -134,7 +134,11 @@ export const getFavMeals = () => {
         payload: data.meals,
       });
     } catch (error) {
-      Alert.alert("Error", error.message);
+      const errorMessage = error.response.data
+        ? error.response.data.message
+        : error.message;
+
+      Alert.alert("Error", errorMessage);
     }
   };
 };
@@ -168,7 +172,11 @@ export const removeFavMeal = (id, cb) => {
       });
       cb && cb();
     } catch (error) {
-      Alert.alert("Error", error.message);
+      const errorMessage = error.response.data
+        ? error.response.data.message
+        : error.message;
+
+      Alert.alert("Error", errorMessage);
     }
   };
 };
@@ -221,6 +229,58 @@ export const searchIngredients = (searchValue) => {
         },
       });
     }, 1000);
+  };
+};
+
+export const getFavIngredients = () => {
+  return async (dispatch) => {
+    try {
+      const { data } = await api.getFavIngredients();
+      dispatch({
+        type: GET_FAV_INGREDIENTS,
+        payload: data.ingredients,
+      });
+    } catch (error) {
+      Alert.alert("Error", error.message);
+    }
+  };
+};
+
+export const addFavIngredient = (value, cb) => {
+  return async (dispatch) => {
+    try {
+      const { data } = await api.addFavIngredient(value);
+      dispatch({
+        type: ADD_FAV_INGREDIENT,
+        payload: data.newData,
+      });
+      cb && cb(data.newData);
+    } catch (error) {
+      const errorMessage = error.response.data
+        ? error.response.data.message
+        : error.message;
+
+      Alert.alert("Error", errorMessage);
+    }
+  };
+};
+
+export const removeFavIngredient = (id, cb) => {
+  return async (dispatch) => {
+    try {
+      await api.removeFavIngredient(id);
+      dispatch({
+        type: REMOVE_FAV_INGREDIENT,
+        id,
+      });
+      cb && cb();
+    } catch (error) {
+      const errorMessage = error.response.data
+        ? error.response.data.message
+        : error.message;
+
+      Alert.alert("Error", errorMessage);
+    }
   };
 };
 

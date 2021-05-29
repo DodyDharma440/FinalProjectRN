@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "CookBook",
-    "slug": "FinalProjectRN",
+    "slug": "CookBook",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/logo.png",

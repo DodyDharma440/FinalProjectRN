@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import AppLoading from "expo-app-loading";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -12,7 +11,7 @@ import {
   BookmarksStack,
   SettingsStack,
 } from "router/stack";
-import { BottomTab } from "components/layout";
+import { BottomTab, AppLoading } from "components/layout";
 import { getUserData } from "my-redux/actions/auth";
 
 const Stack = createStackNavigator();
