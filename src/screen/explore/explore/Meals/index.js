@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { useSelector, useDispatch } from "react-redux";
 import {
   StyleSheet,
   View,
   FlatList,
   ScrollView,
   RefreshControl,
+  Alert,
 } from "react-native";
 import {
   Container,
@@ -14,36 +14,61 @@ import {
   GridListContainer,
 } from "components/layout";
 import { MealCardMedium, CategoryCard } from "components/products";
-import { getCategoryList, getMealsByCategory } from "my-redux/actions/recipe";
 import { getFirstChild, getLastChild } from "utils/getComponentChild";
+import * as api from "api";
 import { useRefreshControl } from "hooks";
 
 const Meals = ({ navigation }) => {
-  const dispatch = useDispatch();
-  const mealsState = useSelector((state) => state.meals);
-  const categoriesState = useSelector((state) => state.categories);
+  const [loading, setLoading] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [switchedMeals, setSwitchedMeals] = useState([]);
   const { refresh, onRefresh } = useRefreshControl((setRefresh) => {
-    dispatch(getCategoryList());
-    dispatch(getMealsByCategory(currentCategory));
+    setLoading(true);
+    getCategories();
+    getMealsByCategory(currentCategory);
 
-    if (!categoriesState.loading && !mealsState.loading) {
+    if (!loading) {
       setRefresh(false);
     }
   });
 
   const [currentCategory, setCurrentCategory] = useState("Beef");
 
+  const getMealsByCategory = async (category) => {
+    try {
+      const { data } = await api.getMealsByCategory(category);
+      setSwitchedMeals(data.meals);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      Alert.alert("Error", error.message);
+    }
+  };
+
+  const getCategories = async () => {
+    try {
+      const { data } = await api.getCategoryList();
+      setCategories(data.categories);
+      setLoading(false);
+    } catch (error) {
+      setLoading(false);
+      Alert.alert("Error", error.message);
+    }
+  };
+
   const handleSwitchCategory = (category) => {
+    setLoading(true);
     setCurrentCategory(category);
     if (category !== currentCategory) {
-      dispatch(getMealsByCategory(category));
+      getMealsByCategory(category);
     }
   };
 
   useEffect(() => {
-    dispatch(getCategoryList());
-    dispatch(getMealsByCategory(currentCategory));
-  }, [dispatch]);
+    setLoading(true);
+    getCategories();
+    getMealsByCategory(currentCategory);
+  }, []);
 
   return (
     <Container>
@@ -54,14 +79,14 @@ const Meals = ({ navigation }) => {
       >
         <View style={[styles.categoriesContainer]}>
           <FlatList
-            data={categoriesState.data}
+            data={categories}
             keyExtractor={(item) => item.idCategory}
             horizontal
             renderItem={({ item, index }) => (
               <CategoryCard
                 item={item}
-                isFirstChild={getFirstChild(index, categoriesState.data.length)}
-                isLastChild={getLastChild(index, categoriesState.data.length)}
+                isFirstChild={getFirstChild(index, categories.length)}
+                isLastChild={getLastChild(index, categories.length)}
                 currentCategory={currentCategory}
                 onSwitchCategory={handleSwitchCategory}
               />
@@ -70,7 +95,7 @@ const Meals = ({ navigation }) => {
           />
         </View>
         <GridListContainer>
-          {mealsState.loading ? (
+          {loading ? (
             <FlatList
               scrollEnabled={false}
               data={[1, 2, 3, 4]}
@@ -82,7 +107,7 @@ const Meals = ({ navigation }) => {
           ) : (
             <FlatList
               scrollEnabled={false}
-              data={mealsState.switchedMeals}
+              data={switchedMeals}
               keyExtractor={(item) => item.idMeal}
               numColumns={2}
               renderItem={({ item }) => <MealCardMedium item={item} />}

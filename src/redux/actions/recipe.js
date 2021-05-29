@@ -1,8 +1,4 @@
 import {
-  FETCHING_MEALS,
-  FETCH_MEALS_ERROR,
-  GET_MEALS,
-  GET_MEALS_BY_CATEGORY,
   SEARCH_MEALS,
   FETCHING_INGREDIENTS,
   FETCH_INGREDIENTS_ERROR,
@@ -10,9 +6,6 @@ import {
   SEARCH_INGREDIENTS,
   SEARCHING,
   SEARCH_ERROR,
-  FETCHING_CATEGORIES,
-  FETCH_CATEGORIES_ERROR,
-  GET_CATEGORIES,
   GET_FAV_MEALS,
   GET_FAV_INGREDIENTS,
   ADD_FAV_MEAL,
@@ -22,84 +15,6 @@ import {
 } from "my-redux/types";
 import { Alert } from "react-native";
 import * as api from "api";
-
-export const getRandomMeals = () => {
-  const category = [
-    "Beef",
-    "Chicken",
-    "Dessert",
-    "Lamb",
-    "Miscellaneous",
-    "Pasta",
-    "Pork",
-    "Seafood",
-    "Side",
-    "Vegetarian",
-    "Breakfast",
-  ];
-  const randomIndex = Math.floor(Math.random() * category.length);
-
-  return async (dispatch) => {
-    dispatch({
-      type: FETCHING_MEALS,
-    });
-
-    try {
-      const { data } = await api.getMealsByCategory(category[randomIndex]);
-      dispatch({
-        type: GET_MEALS,
-        payload: data.meals,
-      });
-    } catch (error) {
-      dispatch({
-        type: FETCH_MEALS_ERROR,
-        error: error.message,
-      });
-    }
-  };
-};
-
-export const getMealsByCategory = (category) => {
-  return async (dispatch) => {
-    dispatch({
-      type: FETCHING_MEALS,
-    });
-
-    try {
-      const { data } = await api.getMealsByCategory(category);
-      dispatch({
-        type: GET_MEALS_BY_CATEGORY,
-        payload: data.meals,
-      });
-    } catch (error) {
-      dispatch({
-        type: FETCH_MEALS_ERROR,
-        error: error.message,
-      });
-    }
-  };
-};
-
-export const getMealsByIngredient = (ingredient) => {
-  return async (dispatch) => {
-    dispatch({
-      type: FETCHING_MEALS,
-    });
-
-    try {
-      const { data } = await api.getMealsByIngredient(ingredient);
-      dispatch({
-        type: GET_MEALS,
-        payload: data.meals,
-      });
-    } catch (error) {
-      dispatch({
-        type: FETCH_MEALS_ERROR,
-        error: error.message,
-      });
-    }
-  };
-};
 
 export const searchMeals = (searchValue) => {
   return async (dispatch) => {
@@ -273,27 +188,6 @@ export const removeFavIngredient = (id, cb) => {
         : error.message;
 
       Alert.alert("Error", errorMessage);
-    }
-  };
-};
-
-export const getCategoryList = () => {
-  return async (dispatch) => {
-    dispatch({
-      type: FETCHING_CATEGORIES,
-    });
-
-    try {
-      const { data } = await api.getCategoryList();
-      dispatch({
-        type: GET_CATEGORIES,
-        payload: data.categories,
-      });
-    } catch (error) {
-      dispatch({
-        type: FETCH_CATEGORIES_ERROR,
-        error: error.message,
-      });
     }
   };
 };

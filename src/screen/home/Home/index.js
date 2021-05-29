@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -9,7 +9,6 @@ import {
   RefreshControl,
 } from "react-native";
 import {
-  getRandomMeals,
   getIngredientList,
   getFavMeals,
   getFavIngredients,
@@ -32,28 +31,58 @@ import {
 } from "components/products";
 import { getFirstChild, getLastChild } from "utils/getComponentChild";
 import { useRefreshControl } from "hooks";
+import * as api from "api";
 
 const Home = ({ navigation }) => {
   const dispatch = useDispatch();
-  const mealsState = useSelector((state) => state.meals);
+  const [loading, setLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [randomMeals, setRandomMeals] = useState([]);
   const ingredientsState = useSelector((state) => state.ingredients);
   const { refresh, onRefresh } = useRefreshControl((setRefresh) => {
-    dispatch(getRandomMeals());
+    getRandomMeals();
     dispatch(getUserData());
     dispatch(getIngredientList());
     dispatch(getFavMeals());
     dispatch(getFavIngredients());
 
-    if (!mealsState.loading && !ingredientsState.loading) {
+    if (!loading && !ingredientsState.loading) {
       setRefresh(false);
     }
   });
+
+  const getRandomMeals = async () => {
+    setLoading(true);
+    const category = [
+      "Beef",
+      "Chicken",
+      "Dessert",
+      "Lamb",
+      "Miscellaneous",
+      "Pasta",
+      "Pork",
+      "Seafood",
+      "Side",
+      "Vegetarian",
+      "Breakfast",
+    ];
+    const randomIndex = Math.floor(Math.random() * category.length);
+
+    try {
+      const { data } = await api.getMealsByCategory(category[randomIndex]);
+      setRandomMeals(data.meals);
+      setLoading(false);
+    } catch (error) {
+      setErrorMessage(error.message);
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
     let isMounted = true;
 
     if (isMounted) {
-      dispatch(getRandomMeals());
+      getRandomMeals();
       dispatch(getUserData());
       dispatch(getIngredientList());
       dispatch(getFavMeals());
@@ -80,10 +109,10 @@ const Home = ({ navigation }) => {
         </ListHeader>
       </View>
       <View>
-        {mealsState.data?.length > 0 ? (
+        {randomMeals.length > 0 ? (
           <>
             <FlatList
-              data={mealsState.data.slice(0, 5)}
+              data={randomMeals.slice(0, 5)}
               keyExtractor={(item) => item.idMeal}
               horizontal
               renderItem={({ item, index }) => (
@@ -99,16 +128,16 @@ const Home = ({ navigation }) => {
               <FlatList
                 scrollEnabled={false}
                 numColumns={2}
-                data={mealsState.data.slice(6, 12)}
+                data={randomMeals.slice(6, 12)}
                 keyExtractor={(item) => item.idMeal}
                 renderItem={({ item }) => <MealCardMedium item={item} />}
                 showsVerticalScrollIndicator={false}
               />
             </GridListContainer>
           </>
-        ) : mealsState.errorMessage ? (
+        ) : errorMessage ? (
           <Alert style={styles.horizontalSpacer} variant="danger">
-            {mealsState.errorMessage}
+            {errorMessage}
           </Alert>
         ) : (
           <>
