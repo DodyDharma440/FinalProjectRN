@@ -12,6 +12,7 @@ import {
   Container,
   CardMediumSkeleton,
   GridListContainer,
+  CategorySkeleton,
 } from "components/layout";
 import { MealCardMedium, CategoryCard } from "components/products";
 import { getFirstChild, getLastChild } from "utils/getComponentChild";
@@ -77,44 +78,60 @@ const Meals = ({ navigation }) => {
           <RefreshControl refreshing={refresh} onRefresh={onRefresh} />
         }
       >
-        <View style={[styles.categoriesContainer]}>
-          <FlatList
-            data={categories}
-            keyExtractor={(item) => item.idCategory}
-            horizontal
-            renderItem={({ item, index }) => (
-              <CategoryCard
-                item={item}
-                isFirstChild={getFirstChild(index, categories.length)}
-                isLastChild={getLastChild(index, categories.length)}
-                currentCategory={currentCategory}
-                onSwitchCategory={handleSwitchCategory}
+        {loading ? (
+          <>
+            <View style={[styles.categoriesContainer, { marginLeft: 12 }]}>
+              <FlatList
+                data={[1, 2, 3, 4, 5, 6]}
+                keyExtractor={(item, index) => `${item}-${index}`}
+                renderItem={() => <CategorySkeleton />}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                scrollEnabled={false}
               />
-            )}
-            showsHorizontalScrollIndicator={false}
-          />
-        </View>
-        <GridListContainer>
-          {loading ? (
-            <FlatList
-              scrollEnabled={false}
-              data={[1, 2, 3, 4]}
-              keyExtractor={(item, index) => `${item}-${index}`}
-              numColumns={2}
-              renderItem={() => <CardMediumSkeleton />}
-              showsVerticalScrollIndicator={false}
-            />
-          ) : (
-            <FlatList
-              scrollEnabled={false}
-              data={switchedMeals}
-              keyExtractor={(item) => item.idMeal}
-              numColumns={2}
-              renderItem={({ item }) => <MealCardMedium item={item} />}
-              showsVerticalScrollIndicator={false}
-            />
-          )}
-        </GridListContainer>
+            </View>
+            <GridListContainer>
+              <FlatList
+                scrollEnabled={false}
+                data={[1, 2, 3, 4]}
+                keyExtractor={(item, index) => `${item}-${index}`}
+                numColumns={2}
+                renderItem={() => <CardMediumSkeleton />}
+                showsVerticalScrollIndicator={false}
+              />
+            </GridListContainer>
+          </>
+        ) : (
+          <>
+            <View style={[styles.categoriesContainer]}>
+              <FlatList
+                data={categories}
+                keyExtractor={(item) => item.idCategory}
+                horizontal
+                renderItem={({ item, index }) => (
+                  <CategoryCard
+                    item={item}
+                    isFirstChild={getFirstChild(index, categories.length)}
+                    isLastChild={getLastChild(index, categories.length)}
+                    currentCategory={currentCategory}
+                    onSwitchCategory={handleSwitchCategory}
+                  />
+                )}
+                showsHorizontalScrollIndicator={false}
+              />
+            </View>
+            <GridListContainer>
+              <FlatList
+                scrollEnabled={false}
+                data={switchedMeals}
+                keyExtractor={(item) => item.idMeal}
+                numColumns={2}
+                renderItem={({ item }) => <MealCardMedium item={item} />}
+                showsVerticalScrollIndicator={false}
+              />
+            </GridListContainer>
+          </>
+        )}
       </ScrollView>
     </Container>
   );

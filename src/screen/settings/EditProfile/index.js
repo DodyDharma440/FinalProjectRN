@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   ScrollView,
   ActivityIndicator,
+  Alert as RnAlert,
 } from "react-native";
 import {
   TextMedium,
@@ -13,6 +14,8 @@ import {
   Button,
   Alert,
 } from "components/common";
+import { useDispatch } from "react-redux";
+import { logout } from "my-redux/actions/auth";
 import { Container } from "components/layout";
 import { useTheme } from "@react-navigation/native";
 import FeatherIcon from "react-native-vector-icons/Feather";
@@ -22,6 +25,7 @@ import * as firebase from "firebase";
 const EditProfile = ({ navigation }) => {
   const userData = firebase.auth().currentUser;
   const { colors } = useTheme();
+  const dispatch = useDispatch();
 
   const defaultInputValue = {
     name: userData.displayName,
@@ -100,6 +104,21 @@ const EditProfile = ({ navigation }) => {
     }
 
     handleSuccess();
+  };
+
+  const handleDeleteAccount = async () => {
+    try {
+      await api.deleteAccount(userData);
+      dispatch(
+        logout((success, err) => {
+          if (err) {
+            RnAlert.alert("Error", "Sign out failed. Please try again.");
+          }
+        })
+      );
+    } catch (error) {
+      RnAlert.alert("Error", error.message);
+    }
   };
 
   return (
@@ -185,6 +204,28 @@ const EditProfile = ({ navigation }) => {
           colorScheme="dark"
         />
         {loading && <ActivityIndicator size="small" color={colors.primary} />}
+        <Button
+          onPress={() =>
+            RnAlert.alert(
+              "Delete Account",
+              "Are you sure to delete your CookBook account? This action can't be undo.",
+              [
+                {
+                  text: "Cancel",
+                  style: "cancel",
+                },
+                {
+                  text: "Delete",
+                  onPress: () => handleDeleteAccount(),
+                },
+              ]
+            )
+          }
+          withSpacer
+          title="Delete Account"
+          colorScheme="light"
+          color="secondary"
+        />
       </ScrollView>
     </Container>
   );

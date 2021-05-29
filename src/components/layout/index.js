@@ -8,6 +8,7 @@ import CardLargeSkeleton from "./CardLargeSkeleton";
 import GridListContainer from "./GridListContainer";
 import ListItem from "./ListItem";
 import AppLoading from "./AppLoading";
+import CategorySkeleton from "./CategorySkeleton";
 
 export {
   BottomTab,
@@ -20,4 +21,5 @@ export {
   GridListContainer,
   ListItem,
   AppLoading,
+  CategorySkeleton,
 };

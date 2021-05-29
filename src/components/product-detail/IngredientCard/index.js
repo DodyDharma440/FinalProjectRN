@@ -70,13 +70,14 @@ const styles = StyleSheet.create({
   container: (first, last) => ({
     marginRight: last ? 16 : 4,
     marginLeft: first ? 16 : 4,
+    width: 130,
   }),
   card: (colors) => ({
     backgroundColor: colors.secondary,
     elevation: 4,
     borderRadius: 10,
     marginBottom: 4,
-    width: 130,
+    width: "100%",
     height: 100,
     justifyContent: "center",
     alignItems: "center",

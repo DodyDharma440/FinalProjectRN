@@ -53,6 +53,10 @@ export const updatePassword = (userData, password) => {
   return userData.updatePassword(password);
 };
 
+export const deleteAccount = (userData) => {
+  return userData.delete();
+};
+
 export const getMealsByCategory = (category) => {
   return apiRecipe.get(`/filter.php?c=${category}`);
 };

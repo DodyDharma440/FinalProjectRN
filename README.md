@@ -19,7 +19,7 @@ Merupakan aplikasi untuk mencari resep makanan
 ## API yang digunakan
 
 - [TheMealDB](https://themealdb.com/api.php), API ini merupakan API utama, yang berisi data makanan dan bahan makanan yang ditampilkan di aplikasi
-- [APICustom](https://api-user-themealdb.herokuapp.com), merupakan API buatan saya sendiri untuk menampung data bookmark makanan dan bahan makanan dari user, dibuat dengan ExpressJS dan NodeJS
+- [APICustom](https://api-user-themealdb.herokuapp.com), merupakan API buatan saya sendiri untuk meng-handle data bookmark makanan dan bahan makanan dari user, dibuat dengan ExpressJS dengan database MongoDB
 
 ## Mockup
 
